@@ -1,11 +1,32 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 
 import { SmoothScrollProvider } from "../components/smooth-scroll-provider";
 import "./globals.css";
 
-export const metadata = {
+export const metadata: Metadata = {
+  metadataBase: new URL("https://qimaqama.org"),
+  manifest: "/manifest.webmanifest",
   title: "Qima Qama",
-  description: "A digital cultural knowledge platform for exploring iTaukei traditions, practices, stories, language, and identity.",
+  description: "Discover Fiji’s culture, traditions, and stories.",
+  icons: {
+    icon: "/icon.png",
+    shortcut: "/icon.png",
+    apple: "/apple-icon.png",
+  },
+  openGraph: {
+    title: "Qima Qama",
+    description: "Discover Fiji’s culture, traditions, and stories.",
+    images: ["/logo.png"],
+    type: "website",
+    url: "https://qimaqama.org",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Qima Qama",
+    description: "Discover Fiji’s culture, traditions, and stories.",
+    images: ["/logo.png"],
+  },
 };
 
 export default function RootLayout({

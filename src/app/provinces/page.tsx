@@ -1,5 +1,28 @@
 import { ProvinceBrowser } from "../../components/province-browser";
 
+const provinceDivisions = [
+  {
+    name: "Wasewase E Na Vualiku",
+    provinces: ["Bua", "Cakaudrove", "Macuata"],
+    className: "border-teal-100 bg-teal-50 text-teal-800",
+  },
+  {
+    name: "Wasewase E Na Tokalau",
+    provinces: ["Lau", "Lomaiviti", "Kadavu"],
+    className: "border-amber-100 bg-amber-50 text-amber-800",
+  },
+  {
+    name: "Wasewase E Loma",
+    provinces: ["Tailevu", "Naitasiri", "Rewa", "Namosi", "Serua"],
+    className: "border-sky-100 bg-sky-50 text-sky-800",
+  },
+  {
+    name: "Wasewase E Na Yasayasa Vaka-Ra",
+    provinces: ["Ba", "Nadroga", "Ra"],
+    className: "border-emerald-100 bg-emerald-50 text-emerald-800",
+  },
+] as const;
+
 const provinceGreetings = [
   {
     phrase: "Bula Vinaka",
@@ -42,16 +65,16 @@ export default function ProvincesPage() {
           <div className="grid gap-8 lg:grid-cols-[minmax(0,1.35fr)_minmax(260px,0.85fr)] lg:items-end">
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.24em] text-emerald-700">
-                Provincial Directory
+                Yasana Directory
               </p>
 
               <h1 className="mt-4 text-4xl font-bold tracking-tight text-slate-900 md:text-6xl">
-                Provinces Of Fiji
+                Yasana Ni Viti
               </h1>
 
               <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-600">
-                Explore Fiji’s 14 provinces through division, land area, and
-                cultural identity in a clearer, more unified provincial guide.
+                Explore Fiji’s 14 yasana through wasewase, land area, and
+                cultural identity in a clearer, more unified guide.
               </p>
             </div>
 
@@ -62,7 +85,7 @@ export default function ProvincesPage() {
               <dl className="mt-4 space-y-4">
                 <div>
                   <dt className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
-                    Total Provinces
+                    Total Yasana
                   </dt>
                   <dd className="mt-1 text-2xl font-semibold text-slate-900">
                     14
@@ -70,7 +93,7 @@ export default function ProvincesPage() {
                 </div>
                 <div>
                   <dt className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
-                    Divisions Covered
+                    Wasewase Covered
                   </dt>
                   <dd className="mt-1 text-2xl font-semibold text-slate-900">
                     4
@@ -81,7 +104,7 @@ export default function ProvincesPage() {
                     Focus
                   </dt>
                   <dd className="mt-1 text-base leading-7 text-slate-600">
-                    Vanua, geography, identity, and provincial character.
+                    Vanua, geography, identity, and yasana character.
                   </dd>
                 </div>
               </dl>
@@ -89,16 +112,21 @@ export default function ProvincesPage() {
           </div>
         </div>
 
-        <div className="mt-8 grid gap-4 md:grid-cols-4">
-          {["Central", "Eastern", "Northern", "Western"].map((division) => (
+        <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          {provinceDivisions.map((division) => (
             <div
-              key={division}
-              className="rounded-2xl border px-4 py-4 shadow-sm text-slate-700"
+              key={division.name}
+              className={`rounded-2xl border px-4 py-4 shadow-sm ${division.className}`}
             >
               <p className="text-xs font-semibold uppercase tracking-[0.2em]">
-                Division
+                Wasewase
               </p>
-              <p className="mt-2 text-lg font-semibold">{division}</p>
+              <p className="mt-2 text-lg font-semibold leading-7">
+                {division.name}
+              </p>
+              <p className="mt-3 text-sm leading-6 opacity-90">
+                {division.provinces.join(" • ")}
+              </p>
             </div>
           ))}
         </div>

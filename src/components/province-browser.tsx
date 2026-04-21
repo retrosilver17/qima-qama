@@ -7,10 +7,11 @@ import { useState } from "react";
 import { provinces } from "../app/data/provinces";
 
 const divisionColors = {
-  Central: "text-sky-700 bg-sky-50 border-sky-100",
-  Eastern: "text-amber-700 bg-amber-50 border-amber-100",
-  Northern: "text-teal-700 bg-teal-50 border-teal-100",
-  Western: "text-emerald-700 bg-emerald-50 border-emerald-100",
+  "Wasewase E Loma": "text-sky-700 bg-sky-50 border-sky-100",
+  "Wasewase E Na Tokalau": "text-amber-700 bg-amber-50 border-amber-100",
+  "Wasewase E Na Vualiku": "text-teal-700 bg-teal-50 border-teal-100",
+  "Wasewase E Na Yasayasa Vaka-Ra":
+    "text-emerald-700 bg-emerald-50 border-emerald-100",
 } as const;
 
 type ViewMode = "cards" | "map";
@@ -26,7 +27,7 @@ export function ProvinceBrowser() {
             Explore
           </p>
           <h2 className="mt-2 text-3xl font-bold text-slate-900">
-            Browse Provinces
+            Browse Yasana
           </h2>
         </div>
 
@@ -40,7 +41,7 @@ export function ProvinceBrowser() {
                 : "text-slate-600 hover:text-emerald-700"
             }`}
           >
-            Province Cards
+            Yasana Cards
           </button>
           <button
             type="button"
@@ -68,7 +69,7 @@ export function ProvinceBrowser() {
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
-                        Province
+                        Yasana
                       </p>
                       <h3 className="mt-2 text-2xl font-semibold text-slate-900">
                         {province.name}
@@ -97,7 +98,7 @@ export function ProvinceBrowser() {
 
                   <div className="mt-6 flex items-center justify-between text-sm font-medium">
                     <span className="text-emerald-700 transition group-hover:text-emerald-800">
-                      View province
+                      View yasana
                     </span>
                     <span className="text-slate-300 transition group-hover:translate-x-1 group-hover:text-emerald-700">
                       →
@@ -114,7 +115,7 @@ export function ProvinceBrowser() {
             <div className="relative mx-auto aspect-[640/425] w-full max-w-5xl">
               <Image
                 src="/maps/fiji-provinces.svg"
-                alt="Map of Fiji provinces"
+                alt="Map of Fiji yasana"
                 fill
                 sizes="100vw"
                 className="object-contain"
@@ -125,8 +126,8 @@ export function ProvinceBrowser() {
 
           <div className="mt-5 flex flex-col gap-3 text-sm text-slate-600 md:flex-row md:items-center md:justify-between">
             <p>
-              Use this map as a visual reference for Fiji’s provincial layout, then
-              return to the province cards to explore each page in detail.
+              Use this map as a visual reference for Fiji’s yasana layout, then
+              return to the yasana cards to explore each page in detail.
             </p>
             <p>
               Source:{" "}

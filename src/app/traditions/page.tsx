@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { MotionArticle, MotionReveal } from "../../components/motion-reveal";
 import { traditions } from "../data/traditions";
 
 const traditionGreetings = [
@@ -43,7 +44,7 @@ const traditionGreetings = [
 
 export default function TraditionsPage() {
   return (
-    <main className="relative isolate min-h-screen bg-slate-50 text-slate-900">
+    <main className="relative isolate min-h-screen overflow-hidden bg-[linear-gradient(180deg,#f8fafc_0%,#f1f5f9_42%,#ffffff_100%)] text-slate-900">
       <div
         aria-hidden="true"
         className="pointer-events-none fixed inset-0 z-0 select-none overflow-hidden"
@@ -60,23 +61,61 @@ export default function TraditionsPage() {
         </div>
       </div>
 
-      <section className="relative z-10 mx-auto max-w-6xl px-6 py-16">
-        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700">
-          Qima Qama
-        </p>
+      <section className="relative z-10 mx-auto max-w-6xl px-6 py-20">
+        <MotionReveal className="overflow-hidden rounded-[2rem] border border-emerald-100 bg-white/90 shadow-lg shadow-slate-200/70 backdrop-blur md:rounded-[2.5rem]">
+          <div className="h-2 bg-[linear-gradient(90deg,#047857,#f59e0b,#0f766e)]" />
+          <div className="bg-gradient-to-br from-emerald-50/90 via-white to-amber-50/50 p-8 md:p-10">
+            <div className="grid gap-8 lg:grid-cols-[minmax(0,1.35fr)_minmax(260px,0.85fr)] lg:items-end">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-[0.24em] text-emerald-700">
+                  Qima Qama
+                </p>
 
-        <h1 className="mt-4 text-4xl font-bold sm:text-5xl">Traditions</h1>
+                <h1 className="mt-4 text-4xl font-bold tracking-tight text-slate-900 md:text-6xl">
+                  Traditions
+                </h1>
 
-        <p className="mt-4 max-w-2xl text-lg text-slate-600">
-          Explore important iTaukei traditions, practices, symbols, and ceremonies.
-        </p>
+                <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-600">
+                  Explore important iTaukei traditions, practices, symbols, and ceremonies
+                  through a clear cultural guide.
+                </p>
+              </div>
+
+              <div className="rounded-3xl border border-white/80 bg-white/90 p-6 shadow-sm backdrop-blur">
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">
+                  Collection Overview
+                </p>
+                <dl className="mt-4 space-y-4">
+                  <div>
+                    <dt className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+                      Total Entries
+                    </dt>
+                    <dd className="mt-1 text-2xl font-semibold text-slate-900">
+                      {traditions.length}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+                      Focus
+                    </dt>
+                    <dd className="mt-1 text-base leading-7 text-slate-600">
+                      Ceremony, identity, symbols, and vanua.
+                    </dd>
+                  </div>
+                </dl>
+              </div>
+            </div>
+          </div>
+        </MotionReveal>
 
         <div className="mt-12 grid gap-6 md:grid-cols-2">
-          {traditions.map((tradition) => (
-            <article
+          {traditions.map((tradition, index) => (
+            <MotionArticle
               key={tradition.slug}
-              className="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+              delay={Math.min(index * 0.035, 0.2)}
+              className="group overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-sm transition hover:border-emerald-200 hover:shadow-lg"
             >
+              <div className="h-1 bg-gradient-to-r from-emerald-600 via-amber-400 to-transparent opacity-0 transition group-hover:opacity-100" />
               <div className="relative h-56 overflow-hidden bg-slate-100">
                 <Image
                   src={tradition.image}
@@ -99,7 +138,7 @@ export default function TraditionsPage() {
                   View tradition
                 </Link>
               </div>
-            </article>
+            </MotionArticle>
           ))}
         </div>
       </section>

@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { MotionArticle, MotionReveal } from "../../components/motion-reveal";
+
 const resourceGreetings = [
   {
     phrase: "Noda iYau",
@@ -20,7 +22,7 @@ const resourceGreetings = [
 
 export default function NodaYauPage() {
   return (
-    <main className="relative isolate min-h-screen bg-slate-50 text-slate-900">
+    <main className="relative isolate min-h-screen overflow-hidden bg-[linear-gradient(180deg,#f8fafc_0%,#f1f5f9_42%,#ffffff_100%)] text-slate-900">
       <div
         aria-hidden="true"
         className="pointer-events-none fixed inset-0 z-0 select-none overflow-hidden"
@@ -38,7 +40,9 @@ export default function NodaYauPage() {
       </div>
 
       <section className="relative z-10 mx-auto max-w-6xl px-6 py-20">
-        <div className="overflow-hidden rounded-[2rem] border border-emerald-100 bg-gradient-to-br from-emerald-50/90 via-white to-amber-50/50 p-8 shadow-sm md:p-10">
+        <MotionReveal className="overflow-hidden rounded-[2rem] border border-emerald-100 bg-white/90 shadow-lg shadow-slate-200/70 backdrop-blur md:rounded-[2.5rem]">
+          <div className="h-2 bg-[linear-gradient(90deg,#047857,#f59e0b,#0f766e)]" />
+          <div className="bg-gradient-to-br from-emerald-50/90 via-white to-amber-50/50 p-8 md:p-10">
           <div className="grid gap-8 lg:grid-cols-[minmax(0,1.35fr)_minmax(260px,0.85fr)] lg:items-end">
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.24em] text-emerald-700">
@@ -67,12 +71,13 @@ export default function NodaYauPage() {
               </p>
             </div>
           </div>
-        </div>
+          </div>
+        </MotionReveal>
 
         <div className="mt-12">
           <div className="grid gap-6">
             <Link href="/noda-yau/gacagaca-ni-veiqaravi-ni-vakawati">
-              <article className="group rounded-[1.9rem] border border-emerald-200 bg-white p-8 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+              <MotionArticle className="group rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm transition hover:border-emerald-200 hover:shadow-lg">
                 <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
@@ -92,11 +97,11 @@ export default function NodaYauPage() {
                     Dolava
                   </span>
                 </div>
-              </article>
+              </MotionArticle>
             </Link>
 
             <Link href="/noda-yau/veika-e-dau-vakayacori-ni-bera-ni-sucu">
-              <article className="group rounded-[1.9rem] border border-emerald-200 bg-white p-8 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+              <MotionArticle className="group rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm transition hover:border-emerald-200 hover:shadow-lg">
                 <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
@@ -115,11 +120,11 @@ export default function NodaYauPage() {
                     Dolava
                   </span>
                 </div>
-              </article>
+              </MotionArticle>
             </Link>
 
             <Link href="/noda-yau/na-cava-na-ibalebale-ni-yaca-na-toga">
-              <article className="group rounded-[1.9rem] border border-emerald-200 bg-white p-8 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+              <MotionArticle className="group rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm transition hover:border-emerald-200 hover:shadow-lg">
                 <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
@@ -138,11 +143,11 @@ export default function NodaYauPage() {
                     Dolava
                   </span>
                 </div>
-              </article>
+              </MotionArticle>
             </Link>
 
             <Link href="/noda-yau/veiliutaki-vakoloni-ena-colo-kei-viti-levu">
-              <article className="group rounded-[1.9rem] border border-emerald-200 bg-white p-8 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+              <MotionArticle className="group rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm transition hover:border-emerald-200 hover:shadow-lg">
                 <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
@@ -162,11 +167,11 @@ export default function NodaYauPage() {
                     Dolava
                   </span>
                 </div>
-              </article>
+              </MotionArticle>
             </Link>
 
             <Link href="/noda-yau/veiwekani-vakavanua-veitabani">
-              <article className="group rounded-[1.9rem] border border-emerald-200 bg-white p-8 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+              <MotionArticle className="group rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm transition hover:border-emerald-200 hover:shadow-lg">
                 <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
@@ -186,11 +191,11 @@ export default function NodaYauPage() {
                     Dolava
                   </span>
                 </div>
-              </article>
+              </MotionArticle>
             </Link>
 
             <Link href="/noda-yau/duidui-tautauvata-tabua-kei-na-yaqona">
-              <article className="group rounded-[1.9rem] border border-emerald-200 bg-white p-8 shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+              <MotionArticle className="group rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm transition hover:border-emerald-200 hover:shadow-lg">
                 <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
@@ -210,7 +215,7 @@ export default function NodaYauPage() {
                     Dolava
                   </span>
                 </div>
-              </article>
+              </MotionArticle>
             </Link>
           </div>
         </div>

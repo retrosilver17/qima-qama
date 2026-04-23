@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { MotionArticle, MotionReveal } from "../../components/motion-reveal";
+
 const aboutGreetings = [
   {
     phrase: "Bula Vinaka",
@@ -41,7 +43,7 @@ const aboutPillars = [
 
 export default function AboutPage() {
   return (
-    <main className="relative isolate min-h-screen bg-slate-50 text-slate-900">
+    <main className="relative isolate min-h-screen overflow-hidden bg-[linear-gradient(180deg,#f8fafc_0%,#f1f5f9_42%,#ffffff_100%)] text-slate-900">
       <div
         aria-hidden="true"
         className="pointer-events-none fixed inset-0 z-0 select-none overflow-hidden"
@@ -59,7 +61,9 @@ export default function AboutPage() {
       </div>
 
       <section className="relative z-10 mx-auto max-w-6xl px-6 py-20">
-        <div className="overflow-hidden rounded-[2rem] border border-emerald-100 bg-gradient-to-br from-emerald-50/90 via-white to-amber-50/50 p-8 shadow-sm md:p-10">
+        <MotionReveal className="overflow-hidden rounded-[2rem] border border-emerald-100 bg-white/90 shadow-lg shadow-slate-200/70 backdrop-blur md:rounded-[2.5rem]">
+          <div className="h-2 bg-[linear-gradient(90deg,#047857,#f59e0b,#0f766e)]" />
+          <div className="bg-gradient-to-br from-emerald-50/90 via-white to-amber-50/50 p-8 md:p-10">
           <div className="grid gap-8 lg:grid-cols-[minmax(0,1.35fr)_minmax(260px,0.85fr)] lg:items-end">
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.24em] text-emerald-700">
@@ -90,13 +94,15 @@ export default function AboutPage() {
               </p>
             </div>
           </div>
-        </div>
+          </div>
+        </MotionReveal>
 
         <div className="mt-10 grid gap-6 md:grid-cols-3">
-          {aboutPillars.map((pillar) => (
-            <section
+          {aboutPillars.map((pillar, index) => (
+            <MotionArticle
               key={pillar.title}
-              className="rounded-3xl border border-slate-200 bg-white p-8 shadow-sm"
+              delay={Math.min(index * 0.035, 0.16)}
+              className="rounded-[1.75rem] border border-slate-200 bg-white p-8 shadow-sm transition hover:border-emerald-200 hover:shadow-lg"
             >
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
                 {pillar.label}
@@ -105,7 +111,7 @@ export default function AboutPage() {
                 {pillar.title}
               </h2>
               <p className="mt-4 leading-8 text-slate-700">{pillar.body}</p>
-            </section>
+            </MotionArticle>
           ))}
         </div>
 

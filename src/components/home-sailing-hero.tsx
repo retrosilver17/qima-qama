@@ -6,9 +6,6 @@ import { useEffect, useRef } from "react";
 
 import { HeroSoundtrack } from "./hero-soundtrack";
 
-const DESKTOP_MOTION_QUERY = "(min-width: 768px) and (hover: hover) and (pointer: fine)";
-const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
-
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
 }
@@ -22,33 +19,36 @@ function smoothstep(progress: number) {
   return clamped * clamped * (3 - 2 * clamped);
 }
 
-function rangeProgress(value: number, start: number, end: number) {
-  if (start === end) {
-    return value >= end ? 1 : 0;
-  }
+function appleEase(progress: number) {
+  const clamped = clamp(progress, 0, 1);
+  return 1 - Math.pow(1 - clamped, 3);
+}
 
+function rangeProgress(value: number, start: number, end: number) {
   return clamp((value - start) / (end - start), 0, 1);
 }
 
-function setOpacity(element: HTMLElement | null, opacity: number) {
+function setTransform(element: HTMLElement | null, value: string) {
   if (element) {
-    element.style.opacity = String(clamp(opacity, 0, 1));
+    element.style.transform = value;
   }
 }
 
-function setTransform(element: HTMLElement | null, transform: string) {
+function setOpacity(element: HTMLElement | null, value: number) {
   if (element) {
-    element.style.transform = transform;
+    element.style.opacity = String(clamp(value, 0, 1));
   }
 }
 
 export function HomeSailingHero() {
   const sectionRef = useRef<HTMLElement | null>(null);
   const skyRef = useRef<HTMLDivElement | null>(null);
-  const nearCloudRef = useRef<HTMLDivElement | null>(null);
-  const farCloudRef = useRef<HTMLDivElement | null>(null);
+  const cloudOneRef = useRef<HTMLDivElement | null>(null);
+  const cloudTwoRef = useRef<HTMLDivElement | null>(null);
   const islandRef = useRef<HTMLDivElement | null>(null);
+  const sunRef = useRef<HTMLDivElement | null>(null);
   const shoreRef = useRef<HTMLDivElement | null>(null);
+  const blendRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
   const brandRef = useRef<HTMLDivElement | null>(null);
   const storyRef = useRef<HTMLDivElement | null>(null);
@@ -63,153 +63,125 @@ export function HomeSailingHero() {
       return;
     }
 
-    const desktopMotionQuery = window.matchMedia(DESKTOP_MOTION_QUERY);
-    const reducedMotionQuery = window.matchMedia(REDUCED_MOTION_QUERY);
-    let cleanupDesktopMotion: (() => void) | null = null;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let raf = 0;
+    let current = 0;
+    let target = 0;
+    let destroyed = false;
 
-    const applyStaticMotion = () => {
-      setOpacity(brandRef.current, 1);
-      setOpacity(storyRef.current, 1);
-      setOpacity(actionsRef.current, 1);
-      setOpacity(imageRef.current, 1);
-      setOpacity(shoreRef.current, 0.62);
-      setTransform(skyRef.current, "translate3d(0, 0, 0)");
-      setTransform(nearCloudRef.current, "translate3d(0, 0, 0)");
-      setTransform(farCloudRef.current, "translate3d(0, 0, 0)");
-      setTransform(islandRef.current, "translate3d(0, 0, 0)");
-      setTransform(contentRef.current, "translate3d(0, 0, 0)");
-      setTransform(brandRef.current, "translate3d(0, 0, 0)");
-      setTransform(storyRef.current, "translate3d(0, 0, 0)");
-      setTransform(imageRef.current, "translate3d(0, 0, 0)");
-      setTransform(boatRef.current, "translate3d(0, 0, 0) rotate(0deg)");
+    const readProgress = () => {
+      const rect = section.getBoundingClientRect();
+      const scrollDistance = Math.max(section.offsetHeight - window.innerHeight, 1);
+      return clamp(-rect.top / scrollDistance, 0, 1);
     };
 
-    const applyDesktopMotion = (progress: number) => {
+    const apply = (progress: number) => {
       const width = window.innerWidth;
-      const eased = smoothstep(progress);
-      const brandIn = 1;
-      const storyIn = rangeProgress(progress, 0.18, 0.38);
-      const actionsIn = rangeProgress(progress, 0.4, 0.56);
-      const imageIn = rangeProgress(progress, 0.48, 0.68);
-      const shoreIn = rangeProgress(progress, 0.68, 0.9);
-      const lift = rangeProgress(progress, 0.72, 1);
-      const boatX = lerp(width * -0.38, width * 1.08, eased);
-      const boatY = 7 + Math.sin(progress * Math.PI * 3) * 6;
-      const boatRotate = Math.sin(progress * Math.PI * 4) * 1.15;
+      const eased = smoothstep(appleEase(progress));
+      const mobile = width < 768;
 
-      setTransform(skyRef.current, `translate3d(0, ${lerp(0, 16, progress)}px, 0)`);
+      if (reduceMotion.matches) {
+        setTransform(boatRef.current, "translate3d(0, 0, 0) rotate(0deg)");
+        setOpacity(brandRef.current, 1);
+        setOpacity(storyRef.current, 1);
+        setOpacity(actionsRef.current, 1);
+        setOpacity(imageRef.current, 1);
+        setOpacity(shoreRef.current, 0.8);
+        setOpacity(blendRef.current, 1);
+        return;
+      }
+
+      const boatStart = mobile ? width * -0.58 : width * -0.34;
+      const boatEnd = mobile ? width * 1.06 : width * 1.16;
+      const boatX = lerp(boatStart, boatEnd, eased);
+      const boatY = mobile
+        ? 5 + Math.sin(progress * Math.PI * 2.4) * 4
+        : 10 + Math.sin(progress * Math.PI * 3) * 6;
+      const boatRotate = Math.sin(progress * Math.PI * 3.4) * (mobile ? 0.8 : 1.1);
+      const storyReveal = smoothstep(rangeProgress(progress, 0.04, 0.22));
+      const actionReveal = smoothstep(rangeProgress(progress, 0.18, 0.38));
+      const imageReveal = smoothstep(rangeProgress(progress, 0.32, 0.58));
+      const shoreReveal = smoothstep(rangeProgress(progress, 0.6, 0.84));
+      const blendReveal = smoothstep(rangeProgress(progress, 0.74, 0.96));
+
+      setTransform(skyRef.current, `translate3d(0, ${lerp(0, mobile ? 10 : 24, progress)}px, 0)`);
       setTransform(
-        nearCloudRef.current,
-        `translate3d(${lerp(width * -0.04, width * 0.045, progress)}px, 0, 0)`,
+        cloudOneRef.current,
+        `translate3d(${lerp(width * -0.05, width * 0.06, progress)}px, 0, 0)`,
       );
       setTransform(
-        farCloudRef.current,
-        `translate3d(${lerp(width * 0.035, width * -0.03, progress)}px, 0, 0)`,
+        cloudTwoRef.current,
+        `translate3d(${lerp(width * 0.04, width * -0.045, progress)}px, 0, 0)`,
       );
       setTransform(
         islandRef.current,
         `translate3d(${lerp(width * -0.025, width * 0.035, progress)}px, 0, 0)`,
       );
-      setTransform(contentRef.current, `translate3d(0, ${lerp(0, -16, lift)}px, 0)`);
-      setTransform(brandRef.current, `translate3d(0, ${lerp(22, 0, brandIn)}px, 0)`);
-      setTransform(storyRef.current, `translate3d(0, ${lerp(24, 0, storyIn)}px, 0)`);
-      setTransform(imageRef.current, `translate3d(0, ${lerp(28, 0, imageIn)}px, 0)`);
+      setTransform(
+        contentRef.current,
+        `translate3d(0, ${lerp(0, mobile ? -8 : -20, rangeProgress(progress, 0.7, 1))}px, 0)`,
+      );
+      setTransform(brandRef.current, "translate3d(0, 0, 0)");
+      setTransform(storyRef.current, `translate3d(0, ${lerp(10, 0, storyReveal)}px, 0)`);
+      setTransform(imageRef.current, `translate3d(0, ${lerp(24, 0, imageReveal)}px, 0)`);
       setTransform(
         boatRef.current,
         `translate3d(${boatX}px, ${boatY}px, 0) rotate(${boatRotate}deg)`,
       );
 
-      setOpacity(brandRef.current, brandIn);
-      setOpacity(storyRef.current, storyIn);
-      setOpacity(actionsRef.current, actionsIn);
-      setOpacity(imageRef.current, imageIn);
-      setOpacity(shoreRef.current, shoreIn * 0.88);
+      setOpacity(sunRef.current, lerp(0.72, 0.36, rangeProgress(progress, 0.35, 1)));
+      setOpacity(brandRef.current, 1);
+      setOpacity(storyRef.current, mobile ? 1 : lerp(0.72, 1, storyReveal));
+      setOpacity(actionsRef.current, mobile ? 1 : actionReveal);
+      setOpacity(imageRef.current, imageReveal);
+      setOpacity(shoreRef.current, shoreReveal * 0.92);
+      setOpacity(blendRef.current, blendReveal);
     };
 
-    const setupDesktopMotion = () => {
-      let frame = 0;
-      let currentProgress = 0;
-      let targetProgress = 0;
-      let destroyed = false;
-
-      const readProgress = () => {
-        const scrollableDistance = Math.max(
-          section.offsetHeight - window.innerHeight,
-          1,
-        );
-        const distanceThroughSection = -section.getBoundingClientRect().top;
-        return clamp(distanceThroughSection / scrollableDistance, 0, 1);
-      };
-
-      const render = () => {
-        if (destroyed) {
-          return;
-        }
-
-        currentProgress += (targetProgress - currentProgress) * 0.16;
-
-        if (Math.abs(targetProgress - currentProgress) < 0.001) {
-          currentProgress = targetProgress;
-        }
-
-        applyDesktopMotion(currentProgress);
-
-        if (currentProgress !== targetProgress) {
-          frame = window.requestAnimationFrame(render);
-        } else {
-          frame = 0;
-        }
-      };
-
-      const schedule = () => {
-        targetProgress = readProgress();
-
-        if (frame === 0) {
-          frame = window.requestAnimationFrame(render);
-        }
-      };
-
-      currentProgress = readProgress();
-      targetProgress = currentProgress;
-      applyDesktopMotion(currentProgress);
-
-      window.addEventListener("scroll", schedule, { passive: true });
-      window.addEventListener("resize", schedule);
-
-      return () => {
-        destroyed = true;
-        window.removeEventListener("scroll", schedule);
-        window.removeEventListener("resize", schedule);
-
-        if (frame !== 0) {
-          window.cancelAnimationFrame(frame);
-        }
-      };
-    };
-
-    const syncMotionMode = () => {
-      if (cleanupDesktopMotion) {
-        cleanupDesktopMotion();
-        cleanupDesktopMotion = null;
+    const render = () => {
+      if (destroyed) {
+        return;
       }
 
-      if (desktopMotionQuery.matches && !reducedMotionQuery.matches) {
-        cleanupDesktopMotion = setupDesktopMotion();
+      current += (target - current) * 0.115;
+
+      if (Math.abs(target - current) < 0.0008) {
+        current = target;
+      }
+
+      apply(current);
+
+      if (current !== target) {
+        raf = window.requestAnimationFrame(render);
       } else {
-        applyStaticMotion();
+        raf = 0;
       }
     };
 
-    syncMotionMode();
-    desktopMotionQuery.addEventListener("change", syncMotionMode);
-    reducedMotionQuery.addEventListener("change", syncMotionMode);
+    const schedule = () => {
+      target = readProgress();
+
+      if (raf === 0) {
+        raf = window.requestAnimationFrame(render);
+      }
+    };
+
+    current = readProgress();
+    target = current;
+    apply(current);
+
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    reduceMotion.addEventListener("change", schedule);
 
     return () => {
-      desktopMotionQuery.removeEventListener("change", syncMotionMode);
-      reducedMotionQuery.removeEventListener("change", syncMotionMode);
+      destroyed = true;
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      reduceMotion.removeEventListener("change", schedule);
 
-      if (cleanupDesktopMotion) {
-        cleanupDesktopMotion();
+      if (raf !== 0) {
+        window.cancelAnimationFrame(raf);
       }
     };
   }, []);
@@ -218,54 +190,66 @@ export function HomeSailingHero() {
     <section
       ref={sectionRef}
       data-home-hero
-      className="relative z-10 min-h-[100svh] bg-[linear-gradient(180deg,#dff7f3_0%,#b7dad5_34%,#0f766e_72%,#f8fafc_100%)] text-white md:h-[230dvh]"
+      className="relative z-10 h-[215svh] bg-[linear-gradient(180deg,#dff7f3_0%,#b7dad5_35%,#0f766e_72%,#f8fafc_100%)] text-white md:h-[280dvh]"
       aria-label="Welcome to Qima Qama"
     >
-      <div className="relative min-h-[100svh] overflow-hidden bg-[#dff7f3] md:sticky md:top-0 md:min-h-dvh">
+      <div className="sticky top-0 min-h-[100svh] overflow-hidden bg-[#dff7f3] md:min-h-dvh">
         <div
           ref={skyRef}
           aria-hidden="true"
-          className="sailing-composited absolute inset-x-0 -inset-y-[12%]"
+          className="sailing-composited absolute inset-x-0 -inset-y-[12%] md:-inset-y-[14%]"
         >
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,#e6faf7_0%,#acd8d5_31%,#f8e1b2_59%,#13665f_100%)]" />
-          <div className="absolute inset-x-0 top-[12%] mx-auto h-28 w-28 rounded-full bg-amber-200/80 md:h-44 md:w-44" />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,#e6faf7_0%,#acd8d5_30%,#f8e1b2_58%,#13665f_100%)]" />
           <div
-            ref={nearCloudRef}
-            className="sailing-cloud-bank sailing-composited absolute left-[-12%] top-[13%] h-24 w-[74vw] opacity-70 md:h-28 md:w-[68vw]"
+            ref={sunRef}
+            className="sailing-sun absolute inset-x-0 top-[12%] mx-auto h-28 w-28 rounded-full bg-amber-200/85 md:h-44 md:w-44"
           />
           <div
-            ref={farCloudRef}
+            ref={cloudOneRef}
+            className="sailing-cloud-bank sailing-composited absolute left-[-14%] top-[13%] h-24 w-[76vw] opacity-70 md:h-28 md:w-[68vw]"
+          />
+          <div
+            ref={cloudTwoRef}
             className="sailing-cloud-bank sailing-cloud-bank-soft sailing-composited absolute right-[-14%] top-[25%] h-20 w-[64vw] opacity-55 md:h-24 md:w-[58vw]"
           />
           <div
             ref={islandRef}
             className="sailing-island-line sailing-composited absolute inset-x-[-8%] bottom-[29%] h-24 md:h-28"
           />
-          <div className="absolute inset-x-[-10%] bottom-[26%] h-[34%] rounded-[50%] bg-[linear-gradient(180deg,rgba(255,255,255,0.26),rgba(15,118,110,0.08))]" />
+          <div className="absolute inset-x-[-10%] bottom-[26%] h-[34%] rounded-[50%] bg-[linear-gradient(180deg,rgba(255,255,255,0.25),rgba(15,118,110,0.08))]" />
           <div className="absolute inset-x-0 bottom-[20%] h-28 bg-[linear-gradient(180deg,rgba(20,83,45,0),rgba(20,83,45,0.32))]" />
         </div>
 
         <div
           aria-hidden="true"
-          className="absolute inset-x-[-18%] bottom-[-2dvh] h-[34dvh] md:h-[48dvh]"
+          className="absolute inset-x-[-18%] bottom-[-2dvh] h-[38dvh] md:h-[48dvh]"
         >
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_28%_0%,rgba(255,255,255,0.42),transparent_30%),radial-gradient(ellipse_at_70%_18%,rgba(255,255,255,0.2),transparent_28%),linear-gradient(180deg,#0f766e_0%,#0f5f68_48%,#0c3d4b_100%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_28%_0%,rgba(255,255,255,0.44),transparent_30%),radial-gradient(ellipse_at_70%_18%,rgba(255,255,255,0.2),transparent_28%),linear-gradient(180deg,#0f766e_0%,#0f5f68_48%,#0c3d4b_100%)]" />
           <div className="sailing-wave sailing-wave-back absolute left-0 top-0 h-20 w-[130%] md:h-24" />
           <div className="sailing-wave sailing-wave-front absolute left-[-8%] top-14 h-24 w-[140%] md:top-16 md:h-28" />
-          <div className="sailing-current-lines absolute inset-y-0 left-[-80px] right-[-80px] opacity-[0.32] md:opacity-[0.42]" />
+          <div className="sailing-current-lines absolute inset-y-0 left-[-80px] right-[-80px] opacity-[0.28] md:opacity-[0.42]" />
         </div>
 
         <div
           ref={shoreRef}
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-[30dvh] bg-[linear-gradient(180deg,rgba(248,250,252,0)_0%,rgba(248,250,252,0.18)_38%,#f8fafc_100%)] opacity-60 md:h-[34dvh] md:opacity-0"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-[34dvh] bg-[linear-gradient(180deg,rgba(248,250,252,0)_0%,rgba(248,250,252,0.18)_38%,#f8fafc_100%)] opacity-0"
         />
 
-        <div className="pointer-events-none absolute inset-x-0 top-0 z-20 h-24 bg-[linear-gradient(180deg,rgba(230,250,247,0.96),rgba(230,250,247,0.55),rgba(230,250,247,0))] md:h-28" />
+        <div
+          ref={blendRef}
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 bottom-[-1px] z-30 h-[22dvh] bg-[linear-gradient(180deg,rgba(248,250,252,0)_0%,#f8fafc_78%,#f8fafc_100%)] opacity-0"
+        />
 
-        <div className="relative mx-auto flex min-h-[100svh] max-w-6xl flex-col justify-between px-5 pb-32 pt-20 sm:px-6 md:min-h-dvh md:pb-7 md:pt-28">
-          <div className="grid flex-1 items-start gap-8 pt-3 md:items-center md:pt-0 lg:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)]">
-            <div ref={contentRef} className="sailing-composited relative z-10 max-w-3xl">
+        <div className="pointer-events-none absolute inset-x-0 top-0 z-20 h-24 bg-[linear-gradient(180deg,rgba(230,250,247,0.96),rgba(230,250,247,0.56),rgba(230,250,247,0))] md:h-28" />
+
+        <div className="relative mx-auto flex min-h-[100svh] max-w-6xl flex-col justify-between px-5 pb-28 pt-20 sm:px-6 md:min-h-dvh md:pb-7 md:pt-28">
+          <div className="grid flex-1 items-start gap-8 pt-2 md:items-center md:pt-0 lg:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)]">
+            <div
+              ref={contentRef}
+              className="sailing-composited relative z-10 max-w-3xl"
+            >
               <div ref={brandRef} className="sailing-composited">
                 <p className="text-xs font-semibold uppercase text-emerald-950/85 sm:text-sm">
                   Welcome to
@@ -325,7 +309,10 @@ export function HomeSailingHero() {
               </div>
             </div>
 
-            <div ref={imageRef} className="sailing-composited relative z-10 hidden lg:block">
+            <div
+              ref={imageRef}
+              className="sailing-composited relative z-10 hidden opacity-0 lg:block"
+            >
               <div className="relative overflow-hidden rounded-[2rem] border border-white/30 bg-white/20 p-3 shadow-lg shadow-slate-950/15">
                 <div className="relative h-[460px] w-full">
                   <Image
@@ -350,10 +337,10 @@ export function HomeSailingHero() {
             </div>
           </div>
 
-          <div className="pointer-events-none absolute inset-x-0 bottom-[5dvh] z-0 h-32 px-0 md:bottom-[21dvh] md:h-40">
+          <div className="pointer-events-none absolute inset-x-0 bottom-[6dvh] z-0 h-32 px-0 md:bottom-[21dvh] md:h-40">
             <div
               ref={boatRef}
-              className="sailing-composited absolute bottom-0 left-[2%] w-[180px] sm:w-[245px] md:w-[380px]"
+              className="sailing-composited absolute bottom-0 left-[2%] w-[190px] sm:w-[260px] md:w-[380px]"
             >
               <svg
                 viewBox="0 0 420 235"

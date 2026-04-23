@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { BorderGlow } from "../components/border-glow";
+import { HomeAppleSmoothScroll } from "../components/home-apple-smooth-scroll";
 import { HomeCursorCompanion } from "../components/home-cursor-companion";
 import { HomeGreetingsBackdrop } from "../components/home-greetings-backdrop";
 import { HomeOriginsSection } from "../components/home-origins-section";
@@ -56,6 +57,7 @@ export default function Home() {
 
   return (
     <main className="relative isolate min-h-screen bg-slate-50 text-slate-900">
+      <HomeAppleSmoothScroll />
       <HomeCursorCompanion />
       <HomeGreetingsBackdrop greetings={heroGreetings} />
 

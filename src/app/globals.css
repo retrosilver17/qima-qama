@@ -183,13 +183,7 @@ body {
 }
 
 @media (max-width: 767px), (pointer: coarse) {
-  .sailing-composited {
-    will-change: auto;
-  }
-
   .hero-title-glow,
-  .sailing-wave-back,
-  .sailing-wave-front,
   .sailing-current-lines,
   .sailing-boat-wake {
     animation: none;

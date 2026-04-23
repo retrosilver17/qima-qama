@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { definitions } from "../../definitions";
+import { definitions, fijianDefinitions } from "../../definitions";
 
 const detailGreetings = [
   {
@@ -23,19 +23,27 @@ const detailGreetings = [
 
 export default async function DefinitionDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<{ language?: string }>;
 }) {
   const { slug } = await params;
-  const definition = definitions.find((item) => item.slug === slug);
+  const { language } = await searchParams;
+  const isFijianMode = language === "fijian";
+  const collection = isFijianMode ? fijianDefinitions : definitions;
+  const definition = collection.find((item) => item.slug === slug);
 
   if (!definition) {
     notFound();
   }
 
-  const relatedDefinitions = definitions
+  const relatedDefinitions = collection
     .filter((item) => item.slug !== definition.slug)
     .slice(0, 4);
+  const definitionsHref = isFijianMode
+    ? "/definitions?language=fijian"
+    : "/definitions";
 
   return (
     <main className="relative isolate min-h-screen bg-slate-50 text-slate-900">
@@ -68,9 +76,9 @@ export default async function DefinitionDetailPage({
               </h1>
 
               <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-600">
-                A term used within Fijian ceremonial, cultural, and relational
-                contexts, presented here with a clearer meaning and a small amount
-                of surrounding context.
+                {isFijianMode
+                  ? "Na vosa qo e vakaraitaki vata kei na kena ivakamacala vakaViti."
+                  : "A term used within Fijian ceremonial, cultural, and relational contexts, presented here with a clearer meaning and a small amount of surrounding context."}
               </p>
             </div>
 
@@ -79,11 +87,12 @@ export default async function DefinitionDetailPage({
                 Category
               </p>
               <p className="mt-3 text-2xl font-semibold text-emerald-800">
-                Cultural Glossary
+                {isFijianMode ? "iVakamacala vakaViti" : "Cultural Glossary"}
               </p>
               <p className="mt-3 text-sm leading-6 text-slate-600">
-                This page is part of the Definitions collection for ceremonial and
-                cultural vocabulary.
+                {isFijianMode
+                  ? "Oqo e dua na tiki ni kumuni vosa kei na kena ivakamacala vakaViti."
+                  : "This page is part of the Definitions collection for ceremonial and cultural vocabulary."}
               </p>
             </div>
           </div>
@@ -108,10 +117,9 @@ export default async function DefinitionDetailPage({
               Why This Term Matters
             </h2>
             <p className="mt-4 leading-8 text-slate-700">
-              Terms like {definition.term} help explain important parts of Fijian
-              ceremonial life, language, and traditional protocol. Building this
-              glossary carefully makes the site more useful, respectful, and easier
-              to learn from over time.
+              {isFijianMode
+                ? `Na vosa me vaka na ${definition.term} e vukea na maroroi ni vosa, kena ibalebale, kei na veika e dau vakayagataki kina.`
+                : `Terms like ${definition.term} help explain important parts of Fijian ceremonial life, language, and traditional protocol. Building this glossary carefully makes the site more useful, respectful, and easier to learn from over time.`}
             </p>
           </section>
         </div>
@@ -128,7 +136,7 @@ export default async function DefinitionDetailPage({
             </div>
 
             <Link
-              href="/definitions"
+              href={definitionsHref}
               className="text-sm font-medium text-emerald-700 hover:underline"
             >
               View all definitions
@@ -137,7 +145,14 @@ export default async function DefinitionDetailPage({
 
           <div className="mt-6 grid gap-4 md:grid-cols-2">
             {relatedDefinitions.map((item) => (
-              <Link key={item.slug} href={`/definitions/${item.slug}`}>
+              <Link
+                key={item.slug}
+                href={
+                  isFijianMode
+                    ? `/definitions/${item.slug}?language=fijian`
+                    : `/definitions/${item.slug}`
+                }
+              >
                 <article className="rounded-2xl border border-slate-200 bg-slate-50/70 p-5 shadow-sm transition hover:-translate-y-1 hover:border-emerald-200 hover:bg-white hover:shadow-md">
                   <h3 className="text-lg font-semibold text-slate-900">
                     {item.term}
@@ -153,7 +168,7 @@ export default async function DefinitionDetailPage({
 
         <div className="mt-10 flex flex-wrap gap-4">
           <Link
-            href="/definitions"
+            href={definitionsHref}
             className="rounded-full bg-emerald-700 px-6 py-3 text-sm font-medium text-white transition hover:bg-emerald-800"
           >
             Back to Definitions

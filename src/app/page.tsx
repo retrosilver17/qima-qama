@@ -4,9 +4,8 @@ import Link from "next/link";
 import { BorderGlow } from "../components/border-glow";
 import { HomeCursorCompanion } from "../components/home-cursor-companion";
 import { HomeGreetingsBackdrop } from "../components/home-greetings-backdrop";
-import { HomeHeroReveal } from "../components/home-hero-reveal";
 import { HomeOriginsSection } from "../components/home-origins-section";
-import { HeroSoundtrack } from "../components/hero-soundtrack";
+import { HomeSailingHero } from "../components/home-sailing-hero";
 import { SmoothDisclosure } from "../components/smooth-disclosure";
 import { definitions } from "./definitions";
 import { traditions } from "./data/traditions";
@@ -60,117 +59,7 @@ export default function Home() {
       <HomeCursorCompanion />
       <HomeGreetingsBackdrop greetings={heroGreetings} />
 
-      <section
-        data-home-hero
-        className="relative z-10 mx-auto max-w-6xl overflow-hidden px-6 py-24"
-      >
-        <HomeHeroReveal />
-        <div
-          className="relative grid items-center gap-12 lg:grid-cols-2"
-        >
-          <div className="relative z-10">
-            <div
-              data-hero-badge
-              className="inline-flex rounded-full border border-emerald-200/80 bg-white/85 px-4 py-2 shadow-sm backdrop-blur"
-            >
-              <p className="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-700">
-                Welcome to
-              </p>
-            </div>
-
-            <div data-hero-brand className="relative mt-5 inline-block">
-              <div className="hero-title-glow absolute inset-0 rounded-[2rem]" />
-              <h1 className="hero-title relative rounded-[2rem] border border-emerald-100/80 bg-white/80 px-6 py-5 text-6xl font-black uppercase tracking-[0.26em] text-slate-900 shadow-lg backdrop-blur sm:px-8 sm:text-7xl md:text-8xl">
-                Qima Qama
-              </h1>
-            </div>
-
-            <p
-              data-hero-kicker
-              className="mt-4 text-sm font-semibold uppercase tracking-[0.28em] text-emerald-700"
-            >
-              Digital cultural knowledge platform
-            </p>
-
-            <h2
-              data-hero-headline
-              className="mt-5 max-w-3xl text-4xl font-bold leading-tight tracking-tight text-slate-900 sm:text-5xl md:text-6xl"
-            >
-              Preserving the wisdom,
-              <span className="block text-emerald-700">traditions,</span>
-              and living heritage of the vanua.
-            </h2>
-
-            <p
-              data-hero-copy
-              className="mt-6 max-w-2xl text-lg leading-8 text-slate-600"
-            >
-              A digital cultural knowledge platform for exploring iTaukei traditions,
-              practices, stories, language, and identity through a clean and modern
-              experience.
-            </p>
-
-            <div data-hero-actions className="mt-8 flex flex-wrap gap-4">
-              <Link
-                href="/traditions"
-                className="rounded-full bg-emerald-700 px-7 py-3 text-sm font-medium text-white shadow-sm transition hover:bg-emerald-800"
-              >
-                Explore Traditions
-              </Link>
-
-              <Link
-                href="/provinces"
-                className="rounded-full border border-slate-300 bg-white px-7 py-3 text-sm font-medium text-slate-700 transition hover:border-emerald-700 hover:text-emerald-700"
-              >
-                Browse Provinces
-              </Link>
-
-              <Link
-                href="#definitions"
-                className="rounded-full border border-slate-300 bg-white px-7 py-3 text-sm font-medium text-slate-700 transition hover:border-emerald-700 hover:text-emerald-700"
-              >
-                Definitions
-              </Link>
-            </div>
-
-            <div data-hero-soundtrack>
-              <HeroSoundtrack />
-            </div>
-          </div>
-
-          <div data-hero-visual className="relative z-10">
-            <div className="absolute -left-6 -top-6 h-32 w-32 rounded-full bg-emerald-100 blur-3xl" />
-            <div className="absolute -bottom-8 -right-6 h-40 w-40 rounded-full bg-amber-100 blur-3xl" />
-
-            <div
-              data-hero-visual-inner
-              className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-white p-3 shadow-xl"
-            >
-              <div className="relative h-[500px] w-full">
-                <Image
-                  src="/images/sevusevu.jpg"
-                  alt="Fijian cultural welcome ceremony"
-                  fill
-                  className="rounded-[1.5rem] object-cover"
-                  sizes="(min-width: 1024px) 50vw, 100vw"
-                />
-              </div>
-            </div>
-
-            <div
-              data-hero-card
-              className="absolute -bottom-6 left-6 rounded-2xl border border-slate-200 bg-white/95 p-5 shadow-lg backdrop-blur"
-            >
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
-                Cultural Focus
-              </p>
-              <p className="mt-2 text-lg font-semibold text-slate-900">
-                Ceremony, identity, and vanua
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HomeSailingHero />
 
       <HomeOriginsSection />
 

@@ -134,7 +134,7 @@ export function ProvinceBrowser() {
               <a
                 href="https://commons.wikimedia.org/wiki/File:Fiji_Province.svg"
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className="font-medium text-emerald-700 hover:underline"
               >
                 Wikimedia Commons

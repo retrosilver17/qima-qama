@@ -467,3 +467,44 @@ export const definitions = [
       "Clan; largest kinship group descended from a common ancestor.",
   },
 ].sort((a, b) => a.term.localeCompare(b.term));
+
+export const fijianDefinitions = [
+  {
+    slug: "dratabu",
+    term: "Dratabu",
+    meaning:
+      "Na ulumatua tagane ni turaga ka lako vua na vakanuinui ni na veisosomitaki.",
+  },
+  {
+    slug: "dumu",
+    term: "Dumu",
+    meaning: "Na ili ni dua na ka raba me tara qele.",
+  },
+  {
+    slug: "mataniveiwatini",
+    term: "Mataniveiwatini",
+    meaning:
+      "E dua e luve ni tagane ka dua e luve ni yalewa, ia e dua e tagane ka dua na yalewa vei rau na gone.",
+  },
+  {
+    slug: "veidauveni",
+    term: "Veidauveni",
+    meaning:
+      "E rua na yalewa: e dua e luve ni tagane ka luve ni yalewa o koya ka dua.",
+  },
+  {
+    slug: "veikayaka",
+    term: "Veikayaka",
+    meaning: "Veitalanoa, veivosakitaka.",
+  },
+  {
+    slug: "veisavaki",
+    term: "Veisavaki",
+    meaning: "E dua na tikotiko ka wavokita na iteitei.",
+  },
+  {
+    slug: "vokavoka",
+    term: "Vokavoka",
+    meaning: "Gole sobu na mati.",
+  },
+].sort((a, b) => a.term.localeCompare(b.term));

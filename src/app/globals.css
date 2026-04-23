@@ -74,6 +74,107 @@ body {
   animation: hero-title-pulse 4.2s ease-in-out infinite;
 }
 
+.sailing-wave {
+  background:
+    radial-gradient(50px 30px at 38px 24px, rgb(255 255 255 / 0.72), transparent 72%),
+    radial-gradient(58px 34px at 130px 34px, rgb(255 255 255 / 0.42), transparent 72%),
+    radial-gradient(70px 38px at 235px 22px, rgb(255 255 255 / 0.54), transparent 72%);
+  background-size: 280px 80px;
+  mask-image: linear-gradient(180deg, black 0%, transparent 78%);
+}
+
+.sailing-wave-back {
+  animation: sailing-wave-drift 11s ease-in-out infinite;
+  opacity: 0.42;
+}
+
+.sailing-wave-front {
+  animation: sailing-wave-drift 7s ease-in-out infinite reverse;
+  opacity: 0.68;
+}
+
+.sailing-cloud-bank {
+  background:
+    radial-gradient(ellipse at 12% 58%, rgb(255 255 255 / 0.62), transparent 28%),
+    radial-gradient(ellipse at 28% 48%, rgb(255 255 255 / 0.82), transparent 31%),
+    radial-gradient(ellipse at 52% 60%, rgb(255 255 255 / 0.58), transparent 34%),
+    radial-gradient(ellipse at 74% 50%, rgb(255 255 255 / 0.48), transparent 31%);
+  filter: blur(10px);
+  mask-image: linear-gradient(90deg, transparent, black 18%, black 82%, transparent);
+}
+
+.sailing-cloud-bank-soft {
+  filter: blur(16px);
+}
+
+.sailing-island-line {
+  background:
+    radial-gradient(ellipse at 10% 82%, rgb(47 82 60 / 0.48), transparent 13%),
+    radial-gradient(ellipse at 24% 76%, rgb(48 88 63 / 0.58), transparent 15%),
+    radial-gradient(ellipse at 42% 84%, rgb(45 77 59 / 0.45), transparent 12%),
+    radial-gradient(ellipse at 70% 80%, rgb(49 85 65 / 0.52), transparent 16%),
+    radial-gradient(ellipse at 86% 84%, rgb(39 69 57 / 0.44), transparent 12%);
+  filter: blur(5px);
+  mask-image: linear-gradient(180deg, transparent, black 35%, black 72%, transparent);
+}
+
+.sailing-current-lines {
+  background:
+    repeating-linear-gradient(112deg, rgb(255 255 255 / 0.13) 0 2px, transparent 2px 46px),
+    radial-gradient(ellipse at 24% 34%, rgb(255 255 255 / 0.2), transparent 24%),
+    radial-gradient(ellipse at 74% 52%, rgb(255 255 255 / 0.16), transparent 26%);
+  background-size: 220px 180px, auto, auto;
+  animation: sailing-current-drift 13s linear infinite;
+}
+
+.sailing-boat-wake {
+  stroke-dasharray: 34 18;
+  animation: sailing-wake-flow 2.8s ease-in-out infinite;
+}
+
+@keyframes sailing-wave-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(-42px, 10px, 0);
+  }
+}
+
+@keyframes sailing-current-drift {
+  0% {
+    background-position: 0 0, 0 0, 0 0;
+  }
+
+  100% {
+    background-position: 220px 0, 0 0, 0 0;
+  }
+}
+
+@keyframes sailing-wake-flow {
+  0%,
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0.72;
+  }
+
+  50% {
+    stroke-dashoffset: -42;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sailing-wave-back,
+  .sailing-wave-front,
+  .sailing-current-lines,
+  .sailing-boat-wake {
+    animation: none;
+  }
+}
+
 @keyframes hero-title-pulse {
   0%,
   100% {

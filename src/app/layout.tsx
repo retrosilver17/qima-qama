@@ -44,7 +44,7 @@ export default function RootLayout({
               Qima Qama
             </Link>
 
-            <nav className="hidden gap-6 text-sm font-medium text-slate-700 md:flex">
+            <nav className="hidden gap-4 text-sm font-medium text-slate-700 md:flex">
               <Link href="/" className="hover:text-emerald-700">
                 Home
               </Link>
@@ -53,6 +53,15 @@ export default function RootLayout({
               </Link>
               <Link href="/provinces" className="hover:text-emerald-700">
                Provinces
+              </Link>
+              <Link href="/definitions" className="hover:text-emerald-700">
+                Definitions
+              </Link>
+              <Link
+                href="/na-ivosavosa-vakaviti"
+                className="hover:text-emerald-700"
+              >
+                Na iVosavosa vakaViti
               </Link>
               <Link href="/noda-yau" className="hover:text-emerald-700">
                 Noda iYau

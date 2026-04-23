@@ -1,33 +1,6 @@
 import type { NextConfig } from "next";
 
-const isProduction = process.env.NODE_ENV === "production";
-
-function buildContentSecurityPolicy() {
-  const directives = [
-    "default-src 'self'",
-    `script-src 'self'${isProduction ? "" : " 'unsafe-eval'"} 'unsafe-inline'`,
-    "style-src 'self' 'unsafe-inline'",
-    "img-src 'self' data: blob:",
-    "font-src 'self' data:",
-    "media-src 'self' blob:",
-    "connect-src 'self' ws: wss:",
-    "frame-ancestors 'none'",
-    "base-uri 'self'",
-    "form-action 'self'",
-    "manifest-src 'self'",
-    "object-src 'none'",
-    "worker-src 'self' blob:",
-    "upgrade-insecure-requests",
-  ];
-
-  return directives.join("; ");
-}
-
 const securityHeaders = [
-  {
-    key: "Content-Security-Policy",
-    value: buildContentSecurityPolicy(),
-  },
   {
     key: "Referrer-Policy",
     value: "strict-origin-when-cross-origin",
@@ -42,7 +15,8 @@ const securityHeaders = [
   },
   {
     key: "Permissions-Policy",
-    value: "camera=(), microphone=(), geolocation=()",
+    value:
+      "accelerometer=(), camera=(), display-capture=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()",
   },
   {
     key: "Cross-Origin-Opener-Policy",
@@ -57,12 +31,25 @@ const securityHeaders = [
     value: "off",
   },
   {
+    key: "X-Download-Options",
+    value: "noopen",
+  },
+  {
+    key: "X-Permitted-Cross-Domain-Policies",
+    value: "none",
+  },
+  {
+    key: "Origin-Agent-Cluster",
+    value: "?1",
+  },
+  {
     key: "Strict-Transport-Security",
     value: "max-age=63072000; includeSubDomains; preload",
   },
 ];
 
 const nextConfig: NextConfig = {
+  poweredByHeader: false,
   async headers() {
     return [
       {

@@ -69,7 +69,7 @@ export default function ProvincesPage() {
               </p>
 
               <h1 className="mt-4 text-4xl font-bold tracking-tight text-slate-900 md:text-6xl">
-                Yasana Ni Viti
+                Vei Yasana E Viti
               </h1>
 
               <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-600">

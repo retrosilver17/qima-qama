@@ -243,22 +243,7 @@ export function HomeCursorCompanion() {
   }
 
   if (mode === "mobile") {
-    return (
-      <div
-        aria-hidden="true"
-        className="pointer-events-none fixed bottom-4 right-4 z-20 opacity-90 lg:hidden"
-      >
-        <div className="relative h-16 w-16">
-          <Image
-            src={CHARACTER_ASSET_PATH}
-            alt=""
-            fill
-            sizes="64px"
-            className="object-contain drop-shadow-[0_10px_18px_rgba(15,23,42,0.12)]"
-          />
-        </div>
-      </div>
-    );
+    return null;
   }
 
   if (!isVisible) {

@@ -2,220 +2,330 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRef } from "react";
-import {
-  motion,
-  useReducedMotion,
-  useScroll,
-  useSpring,
-  useTransform,
-} from "motion/react";
+import { useEffect, useRef } from "react";
 
 import { HeroSoundtrack } from "./hero-soundtrack";
 
+const DESKTOP_MOTION_QUERY = "(min-width: 768px) and (hover: hover) and (pointer: fine)";
+const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
+
+function clamp(value: number, min: number, max: number) {
+  return Math.min(Math.max(value, min), max);
+}
+
+function lerp(start: number, end: number, progress: number) {
+  return start + (end - start) * progress;
+}
+
+function smoothstep(progress: number) {
+  const clamped = clamp(progress, 0, 1);
+  return clamped * clamped * (3 - 2 * clamped);
+}
+
+function rangeProgress(value: number, start: number, end: number) {
+  if (start === end) {
+    return value >= end ? 1 : 0;
+  }
+
+  return clamp((value - start) / (end - start), 0, 1);
+}
+
+function setOpacity(element: HTMLElement | null, opacity: number) {
+  if (element) {
+    element.style.opacity = String(clamp(opacity, 0, 1));
+  }
+}
+
+function setTransform(element: HTMLElement | null, transform: string) {
+  if (element) {
+    element.style.transform = transform;
+  }
+}
+
 export function HomeSailingHero() {
   const sectionRef = useRef<HTMLElement | null>(null);
-  const prefersReducedMotion = useReducedMotion();
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end end"],
-  });
-  const easedProgress = useSpring(scrollYProgress, {
-    stiffness: 58,
-    damping: 34,
-    mass: 0.38,
-  });
-  const heroProgress = prefersReducedMotion ? scrollYProgress : easedProgress;
+  const skyRef = useRef<HTMLDivElement | null>(null);
+  const nearCloudRef = useRef<HTMLDivElement | null>(null);
+  const farCloudRef = useRef<HTMLDivElement | null>(null);
+  const islandRef = useRef<HTMLDivElement | null>(null);
+  const shoreRef = useRef<HTMLDivElement | null>(null);
+  const contentRef = useRef<HTMLDivElement | null>(null);
+  const brandRef = useRef<HTMLDivElement | null>(null);
+  const storyRef = useRef<HTMLDivElement | null>(null);
+  const actionsRef = useRef<HTMLDivElement | null>(null);
+  const imageRef = useRef<HTMLDivElement | null>(null);
+  const boatRef = useRef<HTMLDivElement | null>(null);
 
-  const boatX = useTransform(
-    heroProgress,
-    [0, 0.18, 0.55, 0.92, 1],
-    prefersReducedMotion
-      ? ["0vw", "0vw", "0vw", "0vw", "0vw"]
-      : ["-42vw", "-16vw", "34vw", "88vw", "106vw"],
-  );
-  const boatY = useTransform(
-    heroProgress,
-    [0, 0.26, 0.6, 0.86, 1],
-    prefersReducedMotion ? [0, 0, 0, 0, 0] : [12, -5, 9, -4, 2],
-  );
-  const boatRotate = useTransform(
-    heroProgress,
-    [0, 0.22, 0.52, 0.78, 1],
-    prefersReducedMotion ? [0, 0, 0, 0, 0] : [-1.8, 1.2, -0.8, 1.1, 0],
-  );
-  const brandOpacity = useTransform(
-    heroProgress,
-    [0, 0.08, 0.78, 0.96],
-    [0, 1, 1, 0.86],
-  );
-  const brandY = useTransform(
-    heroProgress,
-    [0, 0.18],
-    prefersReducedMotion ? [0, 0] : [24, 0],
-  );
-  const storyOpacity = useTransform(heroProgress, [0.28, 0.46, 1], [0, 1, 1]);
-  const storyY = useTransform(
-    heroProgress,
-    [0.28, 0.5],
-    prefersReducedMotion ? [0, 0] : [26, 0],
-  );
-  const actionsOpacity = useTransform(heroProgress, [0.5, 0.66, 1], [0, 1, 1]);
-  const imageOpacity = useTransform(heroProgress, [0.58, 0.76], [0, 1]);
-  const imageY = useTransform(
-    heroProgress,
-    [0.54, 0.78],
-    prefersReducedMotion ? [0, 0] : [30, 0],
-  );
-  const skyShift = useTransform(
-    heroProgress,
-    [0, 1],
-    prefersReducedMotion ? ["0%", "0%"] : ["0%", "3%"],
-  );
-  const cloudDrift = useTransform(
-    heroProgress,
-    [0, 1],
-    prefersReducedMotion ? ["0vw", "0vw"] : ["-8vw", "9vw"],
-  );
-  const farCloudDrift = useTransform(
-    heroProgress,
-    [0, 1],
-    prefersReducedMotion ? ["0vw", "0vw"] : ["7vw", "-6vw"],
-  );
-  const islandDrift = useTransform(
-    heroProgress,
-    [0, 1],
-    prefersReducedMotion ? ["0vw", "0vw"] : ["-4vw", "5vw"],
-  );
-  const lightOpacity = useTransform(heroProgress, [0, 0.24, 0.72, 1], [0.48, 0.72, 0.58, 0.34]);
-  const shoreOpacity = useTransform(heroProgress, [0.65, 0.86, 1], [0, 0.85, 1]);
-  const contentLift = useTransform(
-    heroProgress,
-    [0.72, 1],
-    prefersReducedMotion ? [0, 0] : [0, -18],
-  );
+  useEffect(() => {
+    const section = sectionRef.current;
+
+    if (!section) {
+      return;
+    }
+
+    const desktopMotionQuery = window.matchMedia(DESKTOP_MOTION_QUERY);
+    const reducedMotionQuery = window.matchMedia(REDUCED_MOTION_QUERY);
+    let cleanupDesktopMotion: (() => void) | null = null;
+
+    const applyStaticMotion = () => {
+      setOpacity(brandRef.current, 1);
+      setOpacity(storyRef.current, 1);
+      setOpacity(actionsRef.current, 1);
+      setOpacity(imageRef.current, 1);
+      setOpacity(shoreRef.current, 0.62);
+      setTransform(skyRef.current, "translate3d(0, 0, 0)");
+      setTransform(nearCloudRef.current, "translate3d(0, 0, 0)");
+      setTransform(farCloudRef.current, "translate3d(0, 0, 0)");
+      setTransform(islandRef.current, "translate3d(0, 0, 0)");
+      setTransform(contentRef.current, "translate3d(0, 0, 0)");
+      setTransform(brandRef.current, "translate3d(0, 0, 0)");
+      setTransform(storyRef.current, "translate3d(0, 0, 0)");
+      setTransform(imageRef.current, "translate3d(0, 0, 0)");
+      setTransform(boatRef.current, "translate3d(0, 0, 0) rotate(0deg)");
+    };
+
+    const applyDesktopMotion = (progress: number) => {
+      const width = window.innerWidth;
+      const eased = smoothstep(progress);
+      const brandIn = 1;
+      const storyIn = rangeProgress(progress, 0.18, 0.38);
+      const actionsIn = rangeProgress(progress, 0.4, 0.56);
+      const imageIn = rangeProgress(progress, 0.48, 0.68);
+      const shoreIn = rangeProgress(progress, 0.68, 0.9);
+      const lift = rangeProgress(progress, 0.72, 1);
+      const boatX = lerp(width * -0.38, width * 1.08, eased);
+      const boatY = 7 + Math.sin(progress * Math.PI * 3) * 6;
+      const boatRotate = Math.sin(progress * Math.PI * 4) * 1.15;
+
+      setTransform(skyRef.current, `translate3d(0, ${lerp(0, 16, progress)}px, 0)`);
+      setTransform(
+        nearCloudRef.current,
+        `translate3d(${lerp(width * -0.04, width * 0.045, progress)}px, 0, 0)`,
+      );
+      setTransform(
+        farCloudRef.current,
+        `translate3d(${lerp(width * 0.035, width * -0.03, progress)}px, 0, 0)`,
+      );
+      setTransform(
+        islandRef.current,
+        `translate3d(${lerp(width * -0.025, width * 0.035, progress)}px, 0, 0)`,
+      );
+      setTransform(contentRef.current, `translate3d(0, ${lerp(0, -16, lift)}px, 0)`);
+      setTransform(brandRef.current, `translate3d(0, ${lerp(22, 0, brandIn)}px, 0)`);
+      setTransform(storyRef.current, `translate3d(0, ${lerp(24, 0, storyIn)}px, 0)`);
+      setTransform(imageRef.current, `translate3d(0, ${lerp(28, 0, imageIn)}px, 0)`);
+      setTransform(
+        boatRef.current,
+        `translate3d(${boatX}px, ${boatY}px, 0) rotate(${boatRotate}deg)`,
+      );
+
+      setOpacity(brandRef.current, brandIn);
+      setOpacity(storyRef.current, storyIn);
+      setOpacity(actionsRef.current, actionsIn);
+      setOpacity(imageRef.current, imageIn);
+      setOpacity(shoreRef.current, shoreIn * 0.88);
+    };
+
+    const setupDesktopMotion = () => {
+      let frame = 0;
+      let currentProgress = 0;
+      let targetProgress = 0;
+      let destroyed = false;
+
+      const readProgress = () => {
+        const scrollableDistance = Math.max(
+          section.offsetHeight - window.innerHeight,
+          1,
+        );
+        const distanceThroughSection = -section.getBoundingClientRect().top;
+        return clamp(distanceThroughSection / scrollableDistance, 0, 1);
+      };
+
+      const render = () => {
+        if (destroyed) {
+          return;
+        }
+
+        currentProgress += (targetProgress - currentProgress) * 0.16;
+
+        if (Math.abs(targetProgress - currentProgress) < 0.001) {
+          currentProgress = targetProgress;
+        }
+
+        applyDesktopMotion(currentProgress);
+
+        if (currentProgress !== targetProgress) {
+          frame = window.requestAnimationFrame(render);
+        } else {
+          frame = 0;
+        }
+      };
+
+      const schedule = () => {
+        targetProgress = readProgress();
+
+        if (frame === 0) {
+          frame = window.requestAnimationFrame(render);
+        }
+      };
+
+      currentProgress = readProgress();
+      targetProgress = currentProgress;
+      applyDesktopMotion(currentProgress);
+
+      window.addEventListener("scroll", schedule, { passive: true });
+      window.addEventListener("resize", schedule);
+
+      return () => {
+        destroyed = true;
+        window.removeEventListener("scroll", schedule);
+        window.removeEventListener("resize", schedule);
+
+        if (frame !== 0) {
+          window.cancelAnimationFrame(frame);
+        }
+      };
+    };
+
+    const syncMotionMode = () => {
+      if (cleanupDesktopMotion) {
+        cleanupDesktopMotion();
+        cleanupDesktopMotion = null;
+      }
+
+      if (desktopMotionQuery.matches && !reducedMotionQuery.matches) {
+        cleanupDesktopMotion = setupDesktopMotion();
+      } else {
+        applyStaticMotion();
+      }
+    };
+
+    syncMotionMode();
+    desktopMotionQuery.addEventListener("change", syncMotionMode);
+    reducedMotionQuery.addEventListener("change", syncMotionMode);
+
+    return () => {
+      desktopMotionQuery.removeEventListener("change", syncMotionMode);
+      reducedMotionQuery.removeEventListener("change", syncMotionMode);
+
+      if (cleanupDesktopMotion) {
+        cleanupDesktopMotion();
+      }
+    };
+  }, []);
 
   return (
     <section
       ref={sectionRef}
       data-home-hero
-      className="relative z-10 h-[285dvh] bg-[linear-gradient(180deg,#dff7f3_0%,#b7dad5_34%,#0f766e_72%,#f8fafc_100%)] text-white"
+      className="relative z-10 min-h-[100svh] bg-[linear-gradient(180deg,#dff7f3_0%,#b7dad5_34%,#0f766e_72%,#f8fafc_100%)] text-white md:h-[230dvh]"
       aria-label="Welcome to Qima Qama"
     >
-      <div className="sticky top-0 min-h-dvh overflow-hidden bg-[#dff7f3]">
-        <motion.div
+      <div className="relative min-h-[100svh] overflow-hidden bg-[#dff7f3] md:sticky md:top-0 md:min-h-dvh">
+        <div
+          ref={skyRef}
           aria-hidden="true"
-          className="sailing-composited absolute inset-x-0 -inset-y-[14%]"
-          style={{ y: skyShift }}
+          className="sailing-composited absolute inset-x-0 -inset-y-[12%]"
         >
           <div className="absolute inset-0 bg-[linear-gradient(180deg,#e6faf7_0%,#acd8d5_31%,#f8e1b2_59%,#13665f_100%)]" />
-          <motion.div
-            className="absolute inset-x-0 top-[12%] mx-auto h-32 w-32 rounded-full bg-amber-200/85 blur-[2px] md:h-44 md:w-44"
-            style={{ opacity: lightOpacity }}
+          <div className="absolute inset-x-0 top-[12%] mx-auto h-28 w-28 rounded-full bg-amber-200/80 md:h-44 md:w-44" />
+          <div
+            ref={nearCloudRef}
+            className="sailing-cloud-bank sailing-composited absolute left-[-12%] top-[13%] h-24 w-[74vw] opacity-70 md:h-28 md:w-[68vw]"
           />
-          <motion.div
-            className="sailing-cloud-bank sailing-composited absolute left-[-12%] top-[13%] h-28 w-[68vw] opacity-75"
-            style={{ x: cloudDrift }}
+          <div
+            ref={farCloudRef}
+            className="sailing-cloud-bank sailing-cloud-bank-soft sailing-composited absolute right-[-14%] top-[25%] h-20 w-[64vw] opacity-55 md:h-24 md:w-[58vw]"
           />
-          <motion.div
-            className="sailing-cloud-bank sailing-cloud-bank-soft sailing-composited absolute right-[-12%] top-[24%] h-24 w-[58vw] opacity-60"
-            style={{ x: farCloudDrift }}
-          />
-          <motion.div
-            className="sailing-island-line sailing-composited absolute inset-x-[-8%] bottom-[29%] h-28"
-            style={{ x: islandDrift }}
+          <div
+            ref={islandRef}
+            className="sailing-island-line sailing-composited absolute inset-x-[-8%] bottom-[29%] h-24 md:h-28"
           />
           <div className="absolute inset-x-[-10%] bottom-[26%] h-[34%] rounded-[50%] bg-[linear-gradient(180deg,rgba(255,255,255,0.26),rgba(15,118,110,0.08))]" />
           <div className="absolute inset-x-0 bottom-[20%] h-28 bg-[linear-gradient(180deg,rgba(20,83,45,0),rgba(20,83,45,0.32))]" />
-        </motion.div>
+        </div>
 
         <div
           aria-hidden="true"
-          className="absolute inset-x-[-18%] bottom-[-2dvh] h-[48dvh]"
+          className="absolute inset-x-[-18%] bottom-[-2dvh] h-[34dvh] md:h-[48dvh]"
         >
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_28%_0%,rgba(255,255,255,0.5),transparent_30%),radial-gradient(ellipse_at_70%_18%,rgba(255,255,255,0.24),transparent_28%),linear-gradient(180deg,#0f766e_0%,#0f5f68_48%,#0c3d4b_100%)]" />
-          <div className="sailing-wave sailing-wave-back absolute left-0 top-0 h-24 w-[130%]" />
-          <div className="sailing-wave sailing-wave-front absolute left-[-8%] top-16 h-28 w-[140%]" />
-          <div className="sailing-current-lines absolute inset-y-0 left-[-80px] right-[-80px] opacity-[0.42]" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_28%_0%,rgba(255,255,255,0.42),transparent_30%),radial-gradient(ellipse_at_70%_18%,rgba(255,255,255,0.2),transparent_28%),linear-gradient(180deg,#0f766e_0%,#0f5f68_48%,#0c3d4b_100%)]" />
+          <div className="sailing-wave sailing-wave-back absolute left-0 top-0 h-20 w-[130%] md:h-24" />
+          <div className="sailing-wave sailing-wave-front absolute left-[-8%] top-14 h-24 w-[140%] md:top-16 md:h-28" />
+          <div className="sailing-current-lines absolute inset-y-0 left-[-80px] right-[-80px] opacity-[0.32] md:opacity-[0.42]" />
         </div>
 
-        <motion.div
+        <div
+          ref={shoreRef}
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-[34dvh] bg-[linear-gradient(180deg,rgba(248,250,252,0)_0%,rgba(248,250,252,0.18)_38%,#f8fafc_100%)]"
-          style={{ opacity: shoreOpacity }}
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-[30dvh] bg-[linear-gradient(180deg,rgba(248,250,252,0)_0%,rgba(248,250,252,0.18)_38%,#f8fafc_100%)] opacity-60 md:h-[34dvh] md:opacity-0"
         />
 
-        <div className="pointer-events-none absolute inset-x-0 top-0 z-20 h-28 bg-[linear-gradient(180deg,rgba(230,250,247,0.96),rgba(230,250,247,0.6),rgba(230,250,247,0))]" />
+        <div className="pointer-events-none absolute inset-x-0 top-0 z-20 h-24 bg-[linear-gradient(180deg,rgba(230,250,247,0.96),rgba(230,250,247,0.55),rgba(230,250,247,0))] md:h-28" />
 
-        <div className="relative mx-auto flex min-h-dvh max-w-6xl flex-col justify-between px-6 pb-7 pt-24 md:pt-28">
-          <div className="grid flex-1 items-center gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)]">
-            <motion.div
-              className="relative z-10 max-w-3xl"
-              style={{ y: contentLift }}
-            >
-              <motion.div style={{ opacity: brandOpacity, y: brandY }}>
-                <p className="text-sm font-semibold uppercase text-emerald-950/85">
+        <div className="relative mx-auto flex min-h-[100svh] max-w-6xl flex-col justify-between px-5 pb-32 pt-20 sm:px-6 md:min-h-dvh md:pb-7 md:pt-28">
+          <div className="grid flex-1 items-start gap-8 pt-3 md:items-center md:pt-0 lg:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)]">
+            <div ref={contentRef} className="sailing-composited relative z-10 max-w-3xl">
+              <div ref={brandRef} className="sailing-composited">
+                <p className="text-xs font-semibold uppercase text-emerald-950/85 sm:text-sm">
                   Welcome to
                 </p>
-                <div className="relative mt-5 inline-block">
-                  <div className="hero-title-glow absolute inset-0 rounded-[2rem]" />
-                  <h1 className="hero-title relative rounded-[1.6rem] border border-white/65 bg-white/88 px-6 py-5 text-5xl font-black uppercase text-slate-950 shadow-lg backdrop-blur sm:px-8 sm:text-7xl md:text-8xl">
+                <div className="relative mt-4 inline-block md:mt-5">
+                  <div className="hero-title-glow absolute inset-0 rounded-[1.5rem] md:rounded-[2rem]" />
+                  <h1 className="hero-title relative rounded-[1.2rem] border border-white/65 bg-white/90 px-5 py-4 text-4xl font-black uppercase text-slate-950 shadow-md sm:px-7 sm:text-6xl md:rounded-[1.6rem] md:px-8 md:py-5 md:text-8xl">
                     Qima Qama
                   </h1>
                 </div>
 
-                <p className="mt-4 text-sm font-semibold uppercase text-emerald-950">
+                <p className="mt-4 text-xs font-semibold uppercase text-emerald-950 sm:text-sm">
                   Digital cultural knowledge platform
                 </p>
-              </motion.div>
+              </div>
 
-              <motion.div style={{ opacity: storyOpacity, y: storyY }}>
-                <h2 className="mt-5 max-w-3xl text-4xl font-bold leading-tight tracking-tight text-white drop-shadow-sm sm:text-5xl md:text-6xl">
+              <div ref={storyRef} className="sailing-composited">
+                <h2 className="mt-5 max-w-3xl text-3xl font-bold leading-tight tracking-tight text-white drop-shadow-sm sm:text-5xl md:text-6xl">
                   Preserving the wisdom,
                   <span className="block text-emerald-100">traditions,</span>
                   and living heritage of the vanua.
                 </h2>
 
-                <p className="mt-6 max-w-2xl text-lg leading-8 text-white/86">
+                <p className="mt-5 max-w-2xl text-base leading-7 text-white/88 sm:text-lg sm:leading-8">
                   A digital cultural knowledge platform for exploring iTaukei
                   traditions, practices, stories, language, and identity through a
                   clean and modern experience.
                 </p>
 
-                <motion.div
-                  className="mt-8 flex flex-wrap gap-4"
-                  style={{ opacity: actionsOpacity }}
+                <div
+                  ref={actionsRef}
+                  className="sailing-composited mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap md:mt-8 md:gap-4"
                 >
                   <Link
                     href="/traditions"
-                    className="min-h-11 rounded-full bg-emerald-700 px-7 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-800"
+                    className="min-h-11 rounded-full bg-emerald-700 px-6 py-3 text-center text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-800 sm:px-7"
                   >
                     Explore Traditions
                   </Link>
 
                   <Link
                     href="/provinces"
-                    className="min-h-11 rounded-full border border-white/70 bg-white/90 px-7 py-3 text-sm font-semibold text-slate-800 transition hover:bg-white hover:text-emerald-800"
+                    className="min-h-11 rounded-full border border-white/70 bg-white/90 px-6 py-3 text-center text-sm font-semibold text-slate-800 transition hover:bg-white hover:text-emerald-800 sm:px-7"
                   >
                     Browse Provinces
                   </Link>
 
                   <Link
                     href="#definitions"
-                    className="min-h-11 rounded-full border border-white/70 bg-white/20 px-7 py-3 text-sm font-semibold text-white transition hover:bg-white hover:text-emerald-800"
+                    className="min-h-11 rounded-full border border-white/70 bg-white/20 px-6 py-3 text-center text-sm font-semibold text-white transition hover:bg-white hover:text-emerald-800 sm:px-7"
                   >
                     Definitions
                   </Link>
-                </motion.div>
+                </div>
 
                 <HeroSoundtrack />
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
 
-            <motion.div
-              style={{ opacity: imageOpacity, y: imageY }}
-              className="relative z-10 hidden lg:block"
-            >
+            <div ref={imageRef} className="sailing-composited relative z-10 hidden lg:block">
               <div className="relative overflow-hidden rounded-[2rem] border border-white/30 bg-white/20 p-3 shadow-lg shadow-slate-950/15">
                 <div className="relative h-[460px] w-full">
                   <Image
@@ -237,13 +347,13 @@ export function HomeSailingHero() {
                   Ceremony, identity, and vanua
                 </p>
               </div>
-            </motion.div>
+            </div>
           </div>
 
-          <div className="pointer-events-none absolute inset-x-0 bottom-[21dvh] z-0 h-40 px-0">
-            <motion.div
-              className="sailing-composited absolute bottom-0 left-[2%] w-[230px] sm:w-[305px] md:w-[380px]"
-              style={{ x: boatX, y: boatY, rotate: boatRotate }}
+          <div className="pointer-events-none absolute inset-x-0 bottom-[5dvh] z-0 h-32 px-0 md:bottom-[21dvh] md:h-40">
+            <div
+              ref={boatRef}
+              className="sailing-composited absolute bottom-0 left-[2%] w-[180px] sm:w-[245px] md:w-[380px]"
             >
               <svg
                 viewBox="0 0 420 235"
@@ -276,8 +386,8 @@ export function HomeSailingHero() {
                 <path
                   d="M203 18 L203 165"
                   stroke="#3d2a20"
-                  strokeWidth="9"
                   strokeLinecap="round"
+                  strokeWidth="9"
                 />
                 <path
                   d="M216 32 C280 56 328 104 350 160 L216 160 Z"
@@ -299,56 +409,56 @@ export function HomeSailingHero() {
                   d="M92 167 C158 184 280 184 338 167"
                   fill="none"
                   stroke="#f5c982"
-                  strokeWidth="7"
                   strokeLinecap="round"
+                  strokeWidth="7"
                 />
                 <path
                   d="M206 28 C228 68 236 112 224 160"
                   fill="none"
                   stroke="#ffffff"
+                  strokeLinecap="round"
                   strokeOpacity="0.45"
                   strokeWidth="3"
-                  strokeLinecap="round"
                 />
                 <path
                   d="M191 48 C173 92 170 126 182 160"
                   fill="none"
                   stroke="#fff7db"
+                  strokeLinecap="round"
                   strokeOpacity="0.5"
                   strokeWidth="3"
-                  strokeLinecap="round"
                 />
                 <path
                   d="M203 30 L76 160"
-                  stroke="#5b3b28"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
                   opacity="0.72"
+                  stroke="#5b3b28"
+                  strokeLinecap="round"
+                  strokeWidth="2.5"
                 />
                 <path
                   d="M203 31 L342 159"
-                  stroke="#5b3b28"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
                   opacity="0.72"
+                  stroke="#5b3b28"
+                  strokeLinecap="round"
+                  strokeWidth="2.5"
                 />
                 <path
                   className="sailing-boat-wake"
                   d="M18 207 C84 223 124 204 176 217 C230 231 292 211 402 222"
                   fill="none"
                   stroke="url(#qima-water-wake)"
-                  strokeWidth="9"
                   strokeLinecap="round"
+                  strokeWidth="9"
                 />
               </svg>
-            </motion.div>
+            </div>
           </div>
 
-          <div className="relative z-10 flex items-center justify-between gap-5 text-white/82">
+          <div className="relative z-10 hidden items-center justify-between gap-5 text-white/82 md:flex">
             <p className="max-w-xs text-xs font-semibold uppercase">
               Vanua, language, and memory
             </p>
-            <div className="hidden h-px flex-1 bg-white/30 sm:block" />
+            <div className="h-px flex-1 bg-white/30" />
             <p className="text-sm font-medium">Ceremony, identity, and story</p>
           </div>
         </div>

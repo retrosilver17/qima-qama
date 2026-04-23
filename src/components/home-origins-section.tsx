@@ -36,7 +36,9 @@ export function HomeOriginsSection() {
   useEffect(() => {
     registerScrollTrigger();
 
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const mediaQuery = window.matchMedia(
+      "(prefers-reduced-motion: reduce), (max-width: 767px), (pointer: coarse)",
+    );
 
     if (mediaQuery.matches) {
       return;

@@ -175,9 +175,34 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .sailing-wave-back,
   .sailing-wave-front,
+  .hero-title-glow,
   .sailing-current-lines,
   .sailing-boat-wake {
     animation: none;
+  }
+}
+
+@media (max-width: 767px), (pointer: coarse) {
+  .sailing-composited {
+    will-change: auto;
+  }
+
+  .hero-title-glow,
+  .sailing-wave-back,
+  .sailing-wave-front,
+  .sailing-current-lines,
+  .sailing-boat-wake {
+    animation: none;
+  }
+
+  .sailing-cloud-bank,
+  .sailing-cloud-bank-soft,
+  .sailing-island-line {
+    filter: none;
+  }
+
+  .sailing-current-lines {
+    display: none;
   }
 }
 

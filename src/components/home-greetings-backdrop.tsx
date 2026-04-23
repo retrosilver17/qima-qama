@@ -31,8 +31,9 @@ export function HomeGreetingsBackdrop({
     const container = containerRef.current;
     const originsSection = document.getElementById("origins");
     const definitionsSection = document.getElementById("definitions");
+    const compactQuery = window.matchMedia("(max-width: 767px), (pointer: coarse)");
 
-    if (!container || !originsSection || !definitionsSection) {
+    if (!container || !originsSection || !definitionsSection || compactQuery.matches) {
       return;
     }
 
@@ -78,7 +79,7 @@ export function HomeGreetingsBackdrop({
     <div
       aria-hidden="true"
       ref={containerRef}
-      className="pointer-events-none fixed inset-0 z-0 select-none overflow-hidden transition-opacity duration-300"
+      className="pointer-events-none fixed inset-0 z-0 hidden select-none overflow-hidden transition-opacity duration-300 md:block"
     >
       <div className="relative mx-auto h-screen max-w-7xl">
         {greetings.map((greeting) => (

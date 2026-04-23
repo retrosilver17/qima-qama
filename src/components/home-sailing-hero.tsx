@@ -21,9 +21,9 @@ export function HomeSailingHero() {
     offset: ["start start", "end end"],
   });
   const easedProgress = useSpring(scrollYProgress, {
-    stiffness: 78,
-    damping: 26,
-    mass: 0.42,
+    stiffness: 58,
+    damping: 34,
+    mass: 0.38,
   });
   const heroProgress = prefersReducedMotion ? scrollYProgress : easedProgress;
 
@@ -70,12 +70,7 @@ export function HomeSailingHero() {
   const skyShift = useTransform(
     heroProgress,
     [0, 1],
-    prefersReducedMotion ? ["0%", "0%"] : ["0%", "7%"],
-  );
-  const waveShift = useTransform(
-    heroProgress,
-    [0, 1],
-    prefersReducedMotion ? ["0%", "0%"] : ["0%", "-12%"],
+    prefersReducedMotion ? ["0%", "0%"] : ["0%", "3%"],
   );
   const cloudDrift = useTransform(
     heroProgress,
@@ -110,7 +105,7 @@ export function HomeSailingHero() {
       <div className="sticky top-0 min-h-dvh overflow-hidden bg-[#dff7f3]">
         <motion.div
           aria-hidden="true"
-          className="absolute inset-x-0 -inset-y-[14%]"
+          className="sailing-composited absolute inset-x-0 -inset-y-[14%]"
           style={{ y: skyShift }}
         >
           <div className="absolute inset-0 bg-[linear-gradient(180deg,#e6faf7_0%,#acd8d5_31%,#f8e1b2_59%,#13665f_100%)]" />
@@ -119,31 +114,30 @@ export function HomeSailingHero() {
             style={{ opacity: lightOpacity }}
           />
           <motion.div
-            className="sailing-cloud-bank absolute left-[-12%] top-[13%] h-28 w-[68vw] opacity-75"
+            className="sailing-cloud-bank sailing-composited absolute left-[-12%] top-[13%] h-28 w-[68vw] opacity-75"
             style={{ x: cloudDrift }}
           />
           <motion.div
-            className="sailing-cloud-bank sailing-cloud-bank-soft absolute right-[-12%] top-[24%] h-24 w-[58vw] opacity-60"
+            className="sailing-cloud-bank sailing-cloud-bank-soft sailing-composited absolute right-[-12%] top-[24%] h-24 w-[58vw] opacity-60"
             style={{ x: farCloudDrift }}
           />
           <motion.div
-            className="sailing-island-line absolute inset-x-[-8%] bottom-[29%] h-28"
+            className="sailing-island-line sailing-composited absolute inset-x-[-8%] bottom-[29%] h-28"
             style={{ x: islandDrift }}
           />
           <div className="absolute inset-x-[-10%] bottom-[26%] h-[34%] rounded-[50%] bg-[linear-gradient(180deg,rgba(255,255,255,0.26),rgba(15,118,110,0.08))]" />
           <div className="absolute inset-x-0 bottom-[20%] h-28 bg-[linear-gradient(180deg,rgba(20,83,45,0),rgba(20,83,45,0.32))]" />
         </motion.div>
 
-        <motion.div
+        <div
           aria-hidden="true"
           className="absolute inset-x-[-18%] bottom-[-2dvh] h-[48dvh]"
-          style={{ x: waveShift }}
         >
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_28%_0%,rgba(255,255,255,0.5),transparent_30%),radial-gradient(ellipse_at_70%_18%,rgba(255,255,255,0.24),transparent_28%),linear-gradient(180deg,#0f766e_0%,#0f5f68_48%,#0c3d4b_100%)]" />
           <div className="sailing-wave sailing-wave-back absolute left-0 top-0 h-24 w-[130%]" />
           <div className="sailing-wave sailing-wave-front absolute left-[-8%] top-16 h-28 w-[140%]" />
-          <div className="sailing-current-lines absolute inset-0 opacity-50" />
-        </motion.div>
+          <div className="sailing-current-lines absolute inset-y-0 left-[-80px] right-[-80px] opacity-[0.42]" />
+        </div>
 
         <motion.div
           aria-hidden="true"
@@ -208,7 +202,7 @@ export function HomeSailingHero() {
 
                   <Link
                     href="#definitions"
-                    className="min-h-11 rounded-full border border-white/70 bg-white/20 px-7 py-3 text-sm font-semibold text-white backdrop-blur transition hover:bg-white hover:text-emerald-800"
+                    className="min-h-11 rounded-full border border-white/70 bg-white/20 px-7 py-3 text-sm font-semibold text-white transition hover:bg-white hover:text-emerald-800"
                   >
                     Definitions
                   </Link>
@@ -222,7 +216,7 @@ export function HomeSailingHero() {
               style={{ opacity: imageOpacity, y: imageY }}
               className="relative z-10 hidden lg:block"
             >
-              <div className="relative overflow-hidden rounded-[2rem] border border-white/30 bg-white/20 p-3 shadow-2xl shadow-slate-950/20 backdrop-blur">
+              <div className="relative overflow-hidden rounded-[2rem] border border-white/30 bg-white/20 p-3 shadow-lg shadow-slate-950/15">
                 <div className="relative h-[460px] w-full">
                   <Image
                     src="/images/sevusevu.jpg"
@@ -235,7 +229,7 @@ export function HomeSailingHero() {
                 </div>
               </div>
 
-              <div className="absolute -bottom-6 left-6 rounded-2xl border border-white/50 bg-white/95 p-5 shadow-lg backdrop-blur">
+              <div className="absolute -bottom-6 left-6 rounded-2xl border border-white/50 bg-white/95 p-5 shadow-lg">
                 <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
                   Cultural Focus
                 </p>
@@ -248,14 +242,14 @@ export function HomeSailingHero() {
 
           <div className="pointer-events-none absolute inset-x-0 bottom-[21dvh] z-0 h-40 px-0">
             <motion.div
-              className="absolute bottom-0 left-[2%] w-[230px] sm:w-[305px] md:w-[380px]"
+              className="sailing-composited absolute bottom-0 left-[2%] w-[230px] sm:w-[305px] md:w-[380px]"
               style={{ x: boatX, y: boatY, rotate: boatRotate }}
             >
               <svg
                 viewBox="0 0 420 235"
                 role="img"
                 aria-label="A sailing boat crossing the ocean"
-                className="h-auto w-full drop-shadow-2xl"
+                className="h-auto w-full"
               >
                 <defs>
                   <linearGradient id="qima-sail-main" x1="0" x2="1" y1="0" y2="1">

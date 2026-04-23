@@ -70,8 +70,13 @@ body {
     radial-gradient(circle at center, rgba(16, 185, 129, 0.28), transparent 58%),
     radial-gradient(circle at 75% 30%, rgba(245, 158, 11, 0.18), transparent 50%),
     radial-gradient(circle at 25% 50%, rgba(255, 255, 255, 0.9), transparent 45%);
-  filter: blur(26px);
+  filter: blur(16px);
   animation: hero-title-pulse 4.2s ease-in-out infinite;
+}
+
+.sailing-composited {
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
 }
 
 .sailing-wave {
@@ -99,12 +104,12 @@ body {
     radial-gradient(ellipse at 28% 48%, rgb(255 255 255 / 0.82), transparent 31%),
     radial-gradient(ellipse at 52% 60%, rgb(255 255 255 / 0.58), transparent 34%),
     radial-gradient(ellipse at 74% 50%, rgb(255 255 255 / 0.48), transparent 31%);
-  filter: blur(10px);
+  filter: blur(3px);
   mask-image: linear-gradient(90deg, transparent, black 18%, black 82%, transparent);
 }
 
 .sailing-cloud-bank-soft {
-  filter: blur(16px);
+  filter: blur(6px);
 }
 
 .sailing-island-line {
@@ -114,7 +119,7 @@ body {
     radial-gradient(ellipse at 42% 84%, rgb(45 77 59 / 0.45), transparent 12%),
     radial-gradient(ellipse at 70% 80%, rgb(49 85 65 / 0.52), transparent 16%),
     radial-gradient(ellipse at 86% 84%, rgb(39 69 57 / 0.44), transparent 12%);
-  filter: blur(5px);
+  filter: blur(2px);
   mask-image: linear-gradient(180deg, transparent, black 35%, black 72%, transparent);
 }
 
@@ -124,6 +129,7 @@ body {
     radial-gradient(ellipse at 24% 34%, rgb(255 255 255 / 0.2), transparent 24%),
     radial-gradient(ellipse at 74% 52%, rgb(255 255 255 / 0.16), transparent 26%);
   background-size: 220px 180px, auto, auto;
+  will-change: transform;
   animation: sailing-current-drift 13s linear infinite;
 }
 
@@ -145,11 +151,11 @@ body {
 
 @keyframes sailing-current-drift {
   0% {
-    background-position: 0 0, 0 0, 0 0;
+    transform: translate3d(0, 0, 0);
   }
 
   100% {
-    background-position: 220px 0, 0 0, 0 0;
+    transform: translate3d(80px, 0, 0);
   }
 }
 

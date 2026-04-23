@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 
 type Greeting = {
   phrase: string;
@@ -24,20 +24,20 @@ export function HomeGreetingsBackdrop({
 }: {
   greetings: Greeting[];
 }) {
-  const [opacity, setOpacity] = useState(1);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     let frame = 0;
+    const container = containerRef.current;
+    const originsSection = document.getElementById("origins");
+    const definitionsSection = document.getElementById("definitions");
+
+    if (!container || !originsSection || !definitionsSection) {
+      return;
+    }
 
     const updateOpacity = () => {
-      const originsSection = document.getElementById("origins");
-      const definitionsSection = document.getElementById("definitions");
       const viewportHeight = window.innerHeight;
-
-      if (!originsSection || !definitionsSection) {
-        setOpacity(1);
-        return;
-      }
 
       const originsTop = originsSection.getBoundingClientRect().top;
       const definitionsTop = definitionsSection.getBoundingClientRect().top;
@@ -55,7 +55,7 @@ export function HomeGreetingsBackdrop({
         ? Math.max(fadedOutOpacity, fadeInProgress)
         : fadedOutOpacity;
 
-      setOpacity(clamp(nextOpacity, 0, 1));
+      container.style.opacity = String(clamp(nextOpacity, 0, 1));
     };
 
     const requestUpdate = () => {
@@ -77,8 +77,8 @@ export function HomeGreetingsBackdrop({
   return (
     <div
       aria-hidden="true"
+      ref={containerRef}
       className="pointer-events-none fixed inset-0 z-0 select-none overflow-hidden transition-opacity duration-300"
-      style={{ opacity }}
     >
       <div className="relative mx-auto h-screen max-w-7xl">
         {greetings.map((greeting) => (

@@ -84,7 +84,7 @@ export function HomeCursorCompanion() {
   }, [mode]);
 
   useEffect(() => {
-    if (mode !== "desktop") {
+    if (mode !== "desktop" || !isVisible) {
       if (rafRef.current !== null) {
         window.cancelAnimationFrame(rafRef.current);
         rafRef.current = null;
@@ -236,7 +236,7 @@ export function HomeCursorCompanion() {
         rafRef.current = null;
       }
     };
-  }, [mode]);
+  }, [isVisible, mode]);
 
   if (mode === null) {
     return null;
@@ -261,13 +261,15 @@ export function HomeCursorCompanion() {
     );
   }
 
+  if (!isVisible) {
+    return null;
+  }
+
   return (
     <div
       aria-hidden="true"
       ref={characterRef}
-      className={`pointer-events-none fixed left-0 top-0 z-20 hidden will-change-[transform,opacity] transition-opacity duration-500 ease-out lg:block ${
-        isVisible ? "opacity-100" : "opacity-0"
-      }`}
+      className="pointer-events-none fixed left-0 top-0 z-20 hidden will-change-transform lg:block"
       style={{
         width: CHARACTER_SIZE,
         height: CHARACTER_SIZE,
@@ -291,7 +293,6 @@ export function HomeCursorCompanion() {
           src={CHARACTER_ASSET_PATH}
           alt=""
           fill
-          priority
           sizes={`${CHARACTER_SIZE}px`}
           className="object-contain drop-shadow-[0_18px_26px_rgba(15,23,42,0.14)]"
         />

@@ -53,6 +53,16 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 .hero-greeting {
   transform: translate3d(0, 0, 0);
   white-space: nowrap;

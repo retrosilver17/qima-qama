@@ -17,6 +17,7 @@ const VIEWPORT_PADDING = 18;
 const LOWER_VIEWPORT_START = 0.58;
 const IDLE_BOB_INTENSITY = 5;
 const DUST_OPACITY_MULTIPLIER = 0.16;
+const CHARACTER_FADE_DURATION_MS = 520;
 
 type Mode = "desktop" | "mobile" | null;
 
@@ -30,8 +31,10 @@ export function HomeCursorCompanion() {
   const shadowRef = useRef<HTMLDivElement | null>(null);
   const dustRef = useRef<HTMLDivElement | null>(null);
   const rafRef = useRef<number | null>(null);
+  const unmountTimerRef = useRef<number | null>(null);
   const [mode, setMode] = useState<Mode>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [shouldRender, setShouldRender] = useState(false);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia(
@@ -69,7 +72,24 @@ export function HomeCursorCompanion() {
     const updateVisibility = () => {
       const rect = definitionsSection.getBoundingClientRect();
       const revealThreshold = window.innerHeight * 0.72;
-      setIsVisible(rect.top <= revealThreshold);
+      const hideThreshold = window.innerHeight * 0.2;
+      const nextVisible = rect.top <= revealThreshold && rect.bottom >= hideThreshold;
+
+      setIsVisible(nextVisible);
+
+      if (nextVisible) {
+        if (unmountTimerRef.current !== null) {
+          window.clearTimeout(unmountTimerRef.current);
+          unmountTimerRef.current = null;
+        }
+
+        setShouldRender(true);
+      } else if (unmountTimerRef.current === null) {
+        unmountTimerRef.current = window.setTimeout(() => {
+          setShouldRender(false);
+          unmountTimerRef.current = null;
+        }, CHARACTER_FADE_DURATION_MS);
+      }
     };
 
     const frame = window.requestAnimationFrame(updateVisibility);
@@ -80,11 +100,16 @@ export function HomeCursorCompanion() {
       window.cancelAnimationFrame(frame);
       window.removeEventListener("scroll", updateVisibility);
       window.removeEventListener("resize", updateVisibility);
+
+      if (unmountTimerRef.current !== null) {
+        window.clearTimeout(unmountTimerRef.current);
+        unmountTimerRef.current = null;
+      }
     };
   }, [mode]);
 
   useEffect(() => {
-    if (mode !== "desktop" || !isVisible) {
+    if (mode !== "desktop" || !shouldRender) {
       if (rafRef.current !== null) {
         window.cancelAnimationFrame(rafRef.current);
         rafRef.current = null;
@@ -236,7 +261,7 @@ export function HomeCursorCompanion() {
         rafRef.current = null;
       }
     };
-  }, [isVisible, mode]);
+  }, [mode, shouldRender]);
 
   if (mode === null) {
     return null;
@@ -246,7 +271,7 @@ export function HomeCursorCompanion() {
     return null;
   }
 
-  if (!isVisible) {
+  if (!shouldRender) {
     return null;
   }
 
@@ -254,7 +279,9 @@ export function HomeCursorCompanion() {
     <div
       aria-hidden="true"
       ref={characterRef}
-      className="pointer-events-none fixed left-0 top-0 z-20 hidden will-change-transform lg:block"
+      className={`pointer-events-none fixed left-0 top-0 z-20 hidden will-change-[opacity,transform] transition-opacity duration-500 ease-out lg:block ${
+        isVisible ? "opacity-100" : "opacity-0"
+      }`}
       style={{
         width: CHARACTER_SIZE,
         height: CHARACTER_SIZE,

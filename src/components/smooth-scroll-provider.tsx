@@ -21,16 +21,22 @@ export function SmoothScrollProvider() {
   useEffect(() => {
     registerScrollTrigger();
 
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const desktopPointerQuery = window.matchMedia(
+      "(hover: hover) and (pointer: fine) and (min-width: 768px)",
+    );
 
-    if (mediaQuery.matches) {
+    if (reducedMotionQuery.matches || !desktopPointerQuery.matches) {
       ScrollTrigger.refresh();
       return;
     }
 
     const lenis = new Lenis({
       autoRaf: false,
+      lerp: 0.085,
       smoothWheel: true,
+      syncTouch: false,
+      wheelMultiplier: 0.88,
     });
 
     let rafId = 0;

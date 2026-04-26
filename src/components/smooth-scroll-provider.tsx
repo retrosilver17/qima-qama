@@ -21,6 +21,13 @@ export function SmoothScrollProvider() {
   useEffect(() => {
     registerScrollTrigger();
 
+    const previousScrollRestoration = window.history.scrollRestoration;
+    window.history.scrollRestoration = "manual";
+
+    if (window.location.hash.length === 0) {
+      window.requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0 }));
+    }
+
     const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     const desktopPointerQuery = window.matchMedia(
       "(hover: hover) and (pointer: fine) and (min-width: 768px)",
@@ -28,7 +35,9 @@ export function SmoothScrollProvider() {
 
     if (reducedMotionQuery.matches || !desktopPointerQuery.matches) {
       ScrollTrigger.refresh();
-      return;
+      return () => {
+        window.history.scrollRestoration = previousScrollRestoration;
+      };
     }
 
     const lenis = new Lenis({
@@ -57,6 +66,7 @@ export function SmoothScrollProvider() {
     ScrollTrigger.refresh();
 
     return () => {
+      window.history.scrollRestoration = previousScrollRestoration;
       window.cancelAnimationFrame(rafId);
       ScrollTrigger.removeEventListener("refresh", onRefresh);
       lenis.off("scroll", ScrollTrigger.update);

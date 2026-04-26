@@ -15,29 +15,27 @@ export function MotionReveal({
   delay = 0,
 }: MotionRevealProps) {
   const prefersReducedMotion = useReducedMotion();
-  const duration = prefersReducedMotion ? 0.01 : 0.58;
+  const duration = prefersReducedMotion ? 0.01 : 0.36;
 
   return (
     <motion.div
       className={className}
       initial={{
         opacity: 0,
-        y: prefersReducedMotion ? 0 : 26,
-        filter: prefersReducedMotion ? "none" : "blur(10px)",
+        y: prefersReducedMotion ? 0 : 14,
       }}
       whileInView={{
         opacity: 1,
         y: 0,
-        filter: "blur(0px)",
       }}
-      viewport={{ once: true, amount: 0.18, margin: "0px 0px -8% 0px" }}
+      viewport={{ once: false, amount: 0.12, margin: "0px 0px -5% 0px" }}
       transition={{
         duration,
         ease: [0.16, 1, 0.3, 1],
         delay: prefersReducedMotion ? 0 : delay,
       }}
       style={{
-        willChange: prefersReducedMotion ? "auto" : "transform, opacity, filter",
+        willChange: prefersReducedMotion ? "auto" : "transform, opacity",
       }}
     >
       {children}
@@ -51,31 +49,29 @@ export function MotionArticle({
   delay = 0,
 }: MotionRevealProps) {
   const prefersReducedMotion = useReducedMotion();
-  const duration = prefersReducedMotion ? 0.01 : 0.5;
+  const duration = prefersReducedMotion ? 0.01 : 0.32;
 
   return (
     <motion.article
       className={className}
       initial={{
         opacity: 0,
-        y: prefersReducedMotion ? 0 : 22,
-        filter: prefersReducedMotion ? "none" : "blur(8px)",
+        y: prefersReducedMotion ? 0 : 12,
       }}
       whileInView={{
         opacity: 1,
         y: 0,
-        filter: "blur(0px)",
       }}
       whileHover={prefersReducedMotion ? undefined : { y: -5, scale: 1.01 }}
       whileTap={prefersReducedMotion ? undefined : { scale: 0.985 }}
-      viewport={{ once: true, amount: 0.14, margin: "0px 0px -6% 0px" }}
+      viewport={{ once: false, amount: 0.12, margin: "0px 0px -5% 0px" }}
       transition={{
         duration,
         ease: [0.16, 1, 0.3, 1],
         delay: prefersReducedMotion ? 0 : delay,
       }}
       style={{
-        willChange: prefersReducedMotion ? "auto" : "transform, opacity, filter",
+        willChange: prefersReducedMotion ? "auto" : "transform, opacity",
       }}
     >
       {children}

@@ -189,10 +189,11 @@ export function HomeOriginsSection() {
     <section
       ref={sectionRef}
       id="origins"
-      className="relative z-10 overflow-hidden bg-[linear-gradient(180deg,#f8fafc_0%,#f6f7f1_8%,#eff5f3_18%,#d6e8e6_34%,#f7f5ef_58%,#1b3344_88%,#f8fafc_100%)] text-slate-900"
+      className="origins-section relative z-10 overflow-hidden text-slate-900"
     >
-      <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-28 bg-gradient-to-b from-slate-50 via-slate-50/70 to-transparent" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-36 bg-gradient-to-t from-slate-50 via-slate-50/75 to-transparent" />
+      <div className="origins-top-blend pointer-events-none absolute inset-x-0 top-0 z-10 h-56" />
+      <div className="origins-bottom-blend pointer-events-none absolute inset-x-0 bottom-0 z-10 h-56" />
+      <div className="origins-masi-thread pointer-events-none absolute inset-x-0 top-0 z-10 h-px" />
       <div className="pointer-events-none absolute inset-y-0 right-5 z-20 hidden lg:flex">
         <div className="sticky top-32 h-56 w-[3px] rounded-full bg-white/25">
           <div
@@ -205,7 +206,7 @@ export function HomeOriginsSection() {
 
       <section
         data-origins-hero
-        className="relative flex min-h-screen items-center justify-center px-6 py-24"
+        className="relative flex min-h-[72vh] items-start justify-center px-6 pb-20 pt-28 md:min-h-[78vh] md:pt-32"
       >
         <div
           data-origins-hero-backdrop

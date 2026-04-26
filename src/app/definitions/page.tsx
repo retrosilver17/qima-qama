@@ -37,7 +37,7 @@ export default async function DefinitionsPage({
     : "Browse the wider English glossary for quick learning across ceremony, protocol, language, and vanua.";
 
   return (
-    <main className="relative isolate min-h-screen overflow-hidden bg-[linear-gradient(180deg,#f8fafc_0%,#f1f5f9_42%,#ffffff_100%)] text-slate-900">
+    <main className="masi-page relative isolate min-h-screen overflow-hidden text-slate-900">
       <div
         aria-hidden="true"
         className="pointer-events-none fixed inset-0 z-0 select-none overflow-hidden"

@@ -44,7 +44,7 @@ export default async function TraditionDetailPage({
 
   if (!tradition) {
     return (
-      <main className="min-h-screen bg-slate-50 text-slate-900">
+      <main className="masi-page min-h-screen text-slate-900">
         <section className="mx-auto max-w-4xl px-6 py-20">
           <h1 className="text-3xl font-bold">Tradition not found</h1>
           <p className="mt-4 text-slate-600">
@@ -62,7 +62,7 @@ export default async function TraditionDetailPage({
   }
 
   return (
-    <main className="min-h-screen bg-slate-50 text-slate-900">
+    <main className="masi-page min-h-screen text-slate-900">
       <section className="mx-auto max-w-6xl px-6 py-16">
         <div className="mb-8">
           <p className="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-700">

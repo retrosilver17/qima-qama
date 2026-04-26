@@ -128,7 +128,7 @@ const reference =
 
 export default function GacagacaNiVeiqaraviNiVakawatiPage() {
   return (
-    <main className="relative isolate min-h-screen bg-slate-50 text-slate-900">
+    <main className="masi-page relative isolate min-h-screen text-slate-900">
       <div
         aria-hidden="true"
         className="pointer-events-none fixed inset-0 z-0 select-none overflow-hidden"

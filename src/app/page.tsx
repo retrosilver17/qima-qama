@@ -57,76 +57,94 @@ export default function Home() {
   const featuredTraditions = traditions.slice(0, 3);
 
   return (
-    <main className="relative isolate min-h-screen bg-slate-50 text-slate-900">
+    <main className="masi-page relative isolate min-h-screen text-slate-900">
       <HomeCursorCompanion />
       <HomeGreetingsBackdrop greetings={heroGreetings} />
 
       <section
         data-home-hero
-        className="relative z-10 mx-auto max-w-6xl overflow-hidden px-6 py-24"
+        className="relative z-10 mx-auto max-w-6xl overflow-hidden px-6 py-20 md:py-24"
       >
         <HomeHeroReveal />
         <div className="relative grid items-center gap-12 lg:grid-cols-2">
           <div className="relative z-10">
             <div
               data-hero-badge
-              className="inline-flex rounded-full border border-emerald-200/80 bg-white/85 px-4 py-2 shadow-sm backdrop-blur"
+              className="heritage-badge inline-flex rounded-full px-4 py-2 shadow-sm"
             >
-              <p className="text-sm font-semibold uppercase tracking-[0.25em] text-emerald-700">
+              <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[#0f766e]">
                 Welcome to
               </p>
             </div>
 
             <div data-hero-brand className="relative mt-5 inline-block">
-              <div className="hero-title-glow absolute inset-0 rounded-[2rem]" />
-              <h1 className="hero-title relative rounded-[2rem] border border-emerald-100/80 bg-white/80 px-6 py-5 text-6xl font-black uppercase tracking-[0.26em] text-slate-900 shadow-lg backdrop-blur sm:px-8 sm:text-7xl md:text-8xl">
+              <div className="hero-title-glow absolute inset-0 rounded-[1.75rem]" />
+              <h1 className="hero-title masi-title-card relative rounded-[1.75rem] px-6 py-5 text-[clamp(3rem,12vw,6rem)] font-black uppercase tracking-[0.18em] text-slate-950 sm:px-8 sm:tracking-[0.24em] md:text-8xl">
                 Qima Qama
               </h1>
             </div>
 
             <p
               data-hero-kicker
-              className="mt-4 text-sm font-semibold uppercase tracking-[0.28em] text-emerald-700"
+              className="mt-4 text-sm font-semibold uppercase tracking-[0.28em] text-[#0f766e]"
             >
               Digital cultural knowledge platform
             </p>
 
             <h2
               data-hero-headline
-              className="mt-5 max-w-3xl text-4xl font-bold leading-tight tracking-tight text-slate-900 sm:text-5xl md:text-6xl"
+              className="mt-5 max-w-3xl text-4xl font-black leading-tight tracking-tight text-slate-950 sm:text-5xl md:text-6xl"
             >
               Preserving the wisdom,
-              <span className="block text-emerald-700">traditions,</span>
+              <span className="block text-[#0f766e]">traditions,</span>
               and living heritage of the vanua.
             </h2>
 
             <p
               data-hero-copy
-              className="mt-6 max-w-2xl text-lg leading-8 text-slate-600"
+              className="mt-6 max-w-2xl text-lg leading-8 text-slate-700"
             >
               A digital cultural knowledge platform for exploring iTaukei traditions,
               practices, stories, language, and identity through a clean and modern
               experience.
             </p>
 
+            <div
+              data-hero-signals
+              className="mt-7 grid max-w-2xl gap-3 sm:grid-cols-3"
+            >
+              <div className="cultural-signal">
+                <p>Vanua</p>
+                <span>Land, people, belonging</span>
+              </div>
+              <div className="cultural-signal">
+                <p>Vosa</p>
+                <span>Language and memory</span>
+              </div>
+              <div className="cultural-signal">
+                <p>iYau</p>
+                <span>Heritage and knowledge</span>
+              </div>
+            </div>
+
             <div data-hero-actions className="mt-8 flex flex-wrap gap-4">
               <Link
                 href="/traditions"
-                className="rounded-full bg-emerald-700 px-7 py-3 text-sm font-medium text-white shadow-sm transition hover:bg-emerald-800"
+                className="btn-primary rounded-full px-7 py-3 text-sm font-semibold text-white"
               >
                 Explore Traditions
               </Link>
 
               <Link
                 href="/provinces"
-                className="rounded-full border border-slate-300 bg-white px-7 py-3 text-sm font-medium text-slate-700 transition hover:border-emerald-700 hover:text-emerald-700"
+                className="btn-secondary rounded-full px-7 py-3 text-sm font-semibold"
               >
                 Browse Provinces
               </Link>
 
               <Link
                 href="#definitions"
-                className="rounded-full border border-slate-300 bg-white px-7 py-3 text-sm font-medium text-slate-700 transition hover:border-emerald-700 hover:text-emerald-700"
+                className="btn-secondary rounded-full px-7 py-3 text-sm font-semibold"
               >
                 Definitions
               </Link>
@@ -138,19 +156,20 @@ export default function Home() {
           </div>
 
           <div data-hero-visual className="relative z-10">
-            <div className="absolute -left-6 -top-6 h-32 w-32 rounded-full bg-emerald-100 blur-3xl" />
-            <div className="absolute -bottom-8 -right-6 h-40 w-40 rounded-full bg-amber-100 blur-3xl" />
+            <div className="masi-corner-mark absolute -left-4 -top-4 h-24 w-24" />
+            <div className="masi-corner-mark absolute -bottom-5 -right-5 h-28 w-28 rotate-180" />
 
             <div
               data-hero-visual-inner
-              className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-white p-3 shadow-xl"
+              className="cultural-frame relative overflow-hidden rounded-[1.75rem] p-3 shadow-xl"
             >
               <div className="relative h-[500px] w-full">
                 <Image
                   src="/images/sevusevu.jpg"
                   alt="Fijian cultural welcome ceremony"
                   fill
-                  className="rounded-[1.5rem] object-cover"
+                  priority
+                  className="rounded-[1.35rem] object-cover"
                   sizes="(min-width: 1024px) 50vw, 100vw"
                 />
               </div>
@@ -158,9 +177,9 @@ export default function Home() {
 
             <div
               data-hero-card
-              className="absolute -bottom-6 left-6 rounded-2xl border border-slate-200 bg-white/95 p-5 shadow-lg backdrop-blur"
+              className="heritage-float-card absolute -bottom-6 left-6 rounded-2xl p-5 shadow-lg"
             >
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#0f766e]">
                 Cultural Focus
               </p>
               <p className="mt-2 text-lg font-semibold text-slate-900">
@@ -176,18 +195,18 @@ export default function Home() {
       <section id="definitions" className="relative z-10 mx-auto max-w-6xl px-6 py-20">
         <MotionReveal className="mb-8 flex items-end justify-between">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700">
+            <p className="section-kicker text-sm font-semibold uppercase tracking-[0.2em] text-[#0f766e]">
               Learn
             </p>
-            <h2 className="mt-2 text-3xl font-bold">Definitions</h2>
-            <p className="mt-4 max-w-3xl text-slate-600">
+            <h2 className="mt-3 text-3xl font-black text-slate-950">Definitions</h2>
+            <p className="mt-4 max-w-3xl text-slate-700">
               Explore common ceremonial and cultural terms used in Fijian traditions.
             </p>
           </div>
 
           <Link
             href="/definitions"
-            className="text-sm font-medium text-emerald-700 hover:underline"
+            className="heritage-text-link text-sm font-semibold"
           >
             View all
           </Link>
@@ -205,12 +224,12 @@ export default function Home() {
                 className="block h-full transition duration-300 ease-out hover:-translate-y-1"
               >
                 <BorderGlow className="h-full">
-                  <article className="h-full rounded-2xl border border-slate-200 bg-white p-6">
+                  <article className="heritage-card h-full rounded-2xl p-6">
                     <h3 className="text-xl font-semibold text-slate-900">
                       {item.term}
                     </h3>
-                    <p className="mt-3 text-slate-600">{item.meaning}</p>
-                    <p className="mt-5 text-sm font-medium text-emerald-700">
+                    <p className="mt-3 text-slate-700">{item.meaning}</p>
+                    <p className="mt-5 text-sm font-semibold text-[#0f766e]">
                       Learn more
                     </p>
                   </article>
@@ -222,18 +241,18 @@ export default function Home() {
       </section>
 
       <section className="relative z-10 mx-auto max-w-6xl px-6 pb-20">
-        <MotionReveal className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm">
+        <MotionReveal className="heritage-panel overflow-hidden rounded-[1.75rem] shadow-sm">
           <div className="grid gap-0 lg:grid-cols-[1.1fr_0.9fr]">
             <div className="p-8 sm:p-10">
-              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-emerald-700">
+              <p className="section-kicker text-sm font-semibold uppercase tracking-[0.22em] text-[#0f766e]">
                 Language Guide
               </p>
 
-              <h2 className="mt-3 text-3xl font-bold text-slate-900 sm:text-4xl">
+              <h2 className="mt-3 text-3xl font-black text-slate-950 sm:text-4xl">
                 Spelling and Pronunciation
               </h2>
 
-              <p className="mt-4 max-w-2xl text-lg leading-8 text-slate-600">
+              <p className="mt-4 max-w-2xl text-lg leading-8 text-slate-700">
                 This alphabet is based on the Roman alphabet but assigns different
                 sound values to certain letters:
               </p>
@@ -243,9 +262,9 @@ export default function Home() {
                   <MotionArticle
                     key={item.letter}
                     delay={index * 0.04}
-                    className="rounded-2xl border border-slate-200 bg-slate-50 p-5 shadow-sm"
+                    className="heritage-tile rounded-2xl p-5 shadow-sm"
                   >
-                    <p className="text-sm font-semibold uppercase tracking-[0.18em] text-emerald-700">
+                    <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#0f766e]">
                       {item.letter}
                     </p>
                     <p className="mt-2 text-xl font-semibold text-slate-900">
@@ -312,7 +331,7 @@ export default function Home() {
               </SmoothDisclosure>
             </div>
 
-            <div className="relative min-h-[320px] border-t border-slate-200 bg-slate-100 lg:min-h-full lg:border-l lg:border-t-0">
+            <div className="relative min-h-[320px] border-t border-stone-300/70 bg-stone-100 lg:min-h-full lg:border-l lg:border-t-0">
               <Image
                 src="/images/spelling-pronunciation.png"
                 alt="Classroom scene showing a Fijian spelling and pronunciation lesson"
@@ -328,15 +347,15 @@ export default function Home() {
       <section className="relative z-10 mx-auto max-w-6xl px-6 pb-20">
         <MotionReveal className="mb-8 flex items-end justify-between">
           <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700">
+            <p className="section-kicker text-sm font-semibold uppercase tracking-[0.2em] text-[#0f766e]">
               Explore
             </p>
-            <h2 className="mt-2 text-3xl font-bold">Featured Traditions</h2>
+            <h2 className="mt-3 text-3xl font-black text-slate-950">Featured Traditions</h2>
           </div>
 
           <Link
             href="/traditions"
-            className="text-sm font-medium text-emerald-700 hover:underline"
+            className="heritage-text-link text-sm font-semibold"
           >
             View all
           </Link>
@@ -354,7 +373,7 @@ export default function Home() {
                 className="group block h-full transition duration-300 ease-out hover:-translate-y-1"
               >
                 <BorderGlow className="h-full">
-                  <article className="h-full rounded-2xl border border-slate-200 bg-white p-6">
+                  <article className="heritage-card h-full rounded-2xl p-6">
                     <div className="relative h-48 overflow-hidden rounded-xl bg-slate-100">
                       <Image
                         src={tradition.image}
@@ -368,8 +387,8 @@ export default function Home() {
                     <h3 className="mt-4 text-xl font-semibold text-slate-900">
                       {tradition.title}
                     </h3>
-                    <p className="mt-3 text-slate-600">{tradition.summary}</p>
-                    <p className="mt-5 text-sm font-medium text-emerald-700">
+                    <p className="mt-3 text-slate-700">{tradition.summary}</p>
+                    <p className="mt-5 text-sm font-semibold text-[#0f766e]">
                       Learn more
                     </p>
                   </article>

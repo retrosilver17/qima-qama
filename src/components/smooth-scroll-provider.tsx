@@ -23,9 +23,17 @@ export function SmoothScrollProvider() {
 
     const previousScrollRestoration = window.history.scrollRestoration;
     window.history.scrollRestoration = "manual";
+    const shouldStartAtTop = window.location.hash.length === 0;
+    let resetScrollTimer = 0;
 
-    if (window.location.hash.length === 0) {
-      window.requestAnimationFrame(() => window.scrollTo({ top: 0, left: 0 }));
+    const resetScrollPosition = () => {
+      window.scrollTo(0, 0);
+    };
+
+    if (shouldStartAtTop) {
+      resetScrollPosition();
+      window.requestAnimationFrame(resetScrollPosition);
+      resetScrollTimer = window.setTimeout(resetScrollPosition, 120);
     }
 
     const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -36,6 +44,7 @@ export function SmoothScrollProvider() {
     if (reducedMotionQuery.matches || !desktopPointerQuery.matches) {
       ScrollTrigger.refresh();
       return () => {
+        window.clearTimeout(resetScrollTimer);
         window.history.scrollRestoration = previousScrollRestoration;
       };
     }
@@ -62,10 +71,15 @@ export function SmoothScrollProvider() {
     lenis.on("scroll", ScrollTrigger.update);
     ScrollTrigger.addEventListener("refresh", onRefresh);
 
+    if (shouldStartAtTop) {
+      lenis.scrollTo(0, { immediate: true });
+    }
+
     rafId = window.requestAnimationFrame(raf);
     ScrollTrigger.refresh();
 
     return () => {
+      window.clearTimeout(resetScrollTimer);
       window.history.scrollRestoration = previousScrollRestoration;
       window.cancelAnimationFrame(rafId);
       ScrollTrigger.removeEventListener("refresh", onRefresh);

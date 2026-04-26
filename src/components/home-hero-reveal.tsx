@@ -29,81 +29,79 @@ export function HomeHeroReveal() {
     const context = gsap.context(() => {
       const tl = gsap.timeline({
         defaults: {
-          duration: 1.1,
+          duration: 0.72,
           ease: "power3.out",
         },
       });
 
       tl.from("[data-hero-badge]", {
-        y: 24,
-        opacity: 0,
+        y: 12,
       })
         .from(
           "[data-hero-brand]",
           {
-            y: 40,
-            opacity: 0,
-            scale: 0.96,
+            y: 18,
+            scale: 0.985,
           },
-          "-=0.75",
+          "-=0.48",
         )
         .from(
           "[data-hero-kicker]",
           {
-            y: 20,
-            opacity: 0,
+            y: 10,
           },
-          "-=0.7",
+          "-=0.44",
         )
         .from(
           "[data-hero-headline]",
           {
-            y: 36,
-            opacity: 0,
+            y: 18,
           },
-          "-=0.7",
+          "-=0.44",
         )
         .from(
           "[data-hero-copy]",
           {
-            y: 28,
-            opacity: 0,
+            y: 14,
           },
-          "-=0.7",
+          "-=0.42",
+        )
+        .from(
+          "[data-hero-signals]",
+          {
+            y: 12,
+          },
+          "-=0.36",
         )
         .from(
           "[data-hero-actions]",
           {
-            y: 24,
-            opacity: 0,
+            y: 12,
             stagger: 0.08,
           },
-          "-=0.65",
+          "-=0.36",
         )
         .from(
           "[data-hero-soundtrack]",
           {
-            y: 20,
-            opacity: 0,
+            y: 10,
           },
-          "-=0.6",
+          "-=0.32",
         )
         .from(
           "[data-hero-visual]",
           {
-            y: 44,
-            opacity: 0,
-            scale: 0.98,
+            y: 18,
+            scale: 0.99,
           },
-          "-=1",
+          "-=0.7",
         )
         .from(
           "[data-hero-card]",
           {
-            y: 24,
-            opacity: 0,
+            y: 12,
           },
-          "-=0.75",
+          "-=0.38",
         );
 
       gsap.to("[data-hero-visual-inner]", {

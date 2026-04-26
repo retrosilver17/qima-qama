@@ -7,6 +7,7 @@ import { HomeGreetingsBackdrop } from "../components/home-greetings-backdrop";
 import { HomeHeroReveal } from "../components/home-hero-reveal";
 import { HomeOriginsSection } from "../components/home-origins-section";
 import { HeroSoundtrack } from "../components/hero-soundtrack";
+import { MotionArticle, MotionReveal } from "../components/motion-reveal";
 import { SmoothDisclosure } from "../components/smooth-disclosure";
 import { definitions } from "./definitions";
 import { traditions } from "./data/traditions";
@@ -173,7 +174,7 @@ export default function Home() {
       <HomeOriginsSection />
 
       <section id="definitions" className="relative z-10 mx-auto max-w-6xl px-6 py-20">
-        <div className="mb-8 flex items-end justify-between">
+        <MotionReveal className="mb-8 flex items-end justify-between">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700">
               Learn
@@ -190,33 +191,38 @@ export default function Home() {
           >
             View all
           </Link>
-        </div>
+        </MotionReveal>
 
         <div className="grid gap-6 md:grid-cols-2">
-          {definitions.slice(0, 4).map((item) => (
-            <Link
+          {definitions.slice(0, 4).map((item, index) => (
+            <MotionReveal
               key={item.term}
-              href={`/definitions/${item.slug}`}
-              className="block h-full"
+              delay={index * 0.05}
+              className="h-full"
             >
-              <BorderGlow className="h-full">
-                <article className="h-full rounded-2xl border border-slate-200 bg-white p-6">
-                  <h3 className="text-xl font-semibold text-slate-900">
-                    {item.term}
-                  </h3>
-                  <p className="mt-3 text-slate-600">{item.meaning}</p>
-                  <p className="mt-5 text-sm font-medium text-emerald-700">
-                    Learn more
-                  </p>
-                </article>
-              </BorderGlow>
-            </Link>
+              <Link
+                href={`/definitions/${item.slug}`}
+                className="block h-full transition duration-300 ease-out hover:-translate-y-1"
+              >
+                <BorderGlow className="h-full">
+                  <article className="h-full rounded-2xl border border-slate-200 bg-white p-6">
+                    <h3 className="text-xl font-semibold text-slate-900">
+                      {item.term}
+                    </h3>
+                    <p className="mt-3 text-slate-600">{item.meaning}</p>
+                    <p className="mt-5 text-sm font-medium text-emerald-700">
+                      Learn more
+                    </p>
+                  </article>
+                </BorderGlow>
+              </Link>
+            </MotionReveal>
           ))}
         </div>
       </section>
 
       <section className="relative z-10 mx-auto max-w-6xl px-6 pb-20">
-        <div className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm">
+        <MotionReveal className="overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-sm">
           <div className="grid gap-0 lg:grid-cols-[1.1fr_0.9fr]">
             <div className="p-8 sm:p-10">
               <p className="text-sm font-semibold uppercase tracking-[0.22em] text-emerald-700">
@@ -233,9 +239,10 @@ export default function Home() {
               </p>
 
               <div className="mt-8 grid gap-4 sm:grid-cols-2">
-                {pronunciationGuide.map((item) => (
-                  <article
+                {pronunciationGuide.map((item, index) => (
+                  <MotionArticle
                     key={item.letter}
+                    delay={index * 0.04}
                     className="rounded-2xl border border-slate-200 bg-slate-50 p-5 shadow-sm"
                   >
                     <p className="text-sm font-semibold uppercase tracking-[0.18em] text-emerald-700">
@@ -247,7 +254,7 @@ export default function Home() {
                     <p className="mt-2 text-sm leading-6 text-slate-600">
                       {item.letter} = {item.sound} ({item.example})
                     </p>
-                  </article>
+                  </MotionArticle>
                 ))}
               </div>
 
@@ -315,11 +322,11 @@ export default function Home() {
               />
             </div>
           </div>
-        </div>
+        </MotionReveal>
       </section>
 
       <section className="relative z-10 mx-auto max-w-6xl px-6 pb-20">
-        <div className="mb-8 flex items-end justify-between">
+        <MotionReveal className="mb-8 flex items-end justify-between">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700">
               Explore
@@ -333,37 +340,42 @@ export default function Home() {
           >
             View all
           </Link>
-        </div>
+        </MotionReveal>
 
         <div className="grid gap-6 md:grid-cols-3">
-          {featuredTraditions.map((tradition) => (
-            <Link
+          {featuredTraditions.map((tradition, index) => (
+            <MotionReveal
               key={tradition.slug}
-              href={`/traditions/${tradition.slug}`}
-              className="group block h-full transition duration-300 hover:-translate-y-1"
+              delay={index * 0.06}
+              className="h-full"
             >
-              <BorderGlow className="h-full">
-                <article className="h-full rounded-2xl border border-slate-200 bg-white p-6">
-                  <div className="relative h-48 overflow-hidden rounded-xl bg-slate-100">
-                    <Image
-                      src={tradition.image}
-                      alt={tradition.title}
-                      fill
-                      sizes="(min-width: 768px) 33vw, 100vw"
-                      className="object-cover transition duration-300 group-hover:scale-105"
-                    />
-                  </div>
+              <Link
+                href={`/traditions/${tradition.slug}`}
+                className="group block h-full transition duration-300 ease-out hover:-translate-y-1"
+              >
+                <BorderGlow className="h-full">
+                  <article className="h-full rounded-2xl border border-slate-200 bg-white p-6">
+                    <div className="relative h-48 overflow-hidden rounded-xl bg-slate-100">
+                      <Image
+                        src={tradition.image}
+                        alt={tradition.title}
+                        fill
+                        sizes="(min-width: 768px) 33vw, 100vw"
+                        className="object-cover transition duration-300 group-hover:scale-105"
+                      />
+                    </div>
 
-                  <h3 className="mt-4 text-xl font-semibold text-slate-900">
-                    {tradition.title}
-                  </h3>
-                  <p className="mt-3 text-slate-600">{tradition.summary}</p>
-                  <p className="mt-5 text-sm font-medium text-emerald-700">
-                    Learn more
-                  </p>
-                </article>
-              </BorderGlow>
-            </Link>
+                    <h3 className="mt-4 text-xl font-semibold text-slate-900">
+                      {tradition.title}
+                    </h3>
+                    <p className="mt-3 text-slate-600">{tradition.summary}</p>
+                    <p className="mt-5 text-sm font-medium text-emerald-700">
+                      Learn more
+                    </p>
+                  </article>
+                </BorderGlow>
+              </Link>
+            </MotionReveal>
           ))}
         </div>
       </section>

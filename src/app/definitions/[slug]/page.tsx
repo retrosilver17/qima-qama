@@ -91,7 +91,7 @@ export default async function DefinitionDetailPage({
               </p>
               <p className="mt-3 text-sm leading-6 text-slate-600">
                 {isFijianMode
-                  ? "Oqo e dua na tiki ni kumuni vosa kei na kena ivakamacala vakaViti."
+                  ? "Oqo e dua na tiki ni kumuni vosa kei na kena ivakamacala vakaViti. Eso na vosa e rawa ni duidui na kena ibalebale ena kena vakayagataki."
                   : "This page is part of the Definitions collection for ceremonial and cultural vocabulary."}
               </p>
             </div>

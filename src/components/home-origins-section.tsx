@@ -53,25 +53,22 @@ export function HomeOriginsSection() {
 
     const context = gsap.context(() => {
       gsap.from("[data-origins-hero-title]", {
-        y: 36,
-        opacity: 0,
-        duration: 1.2,
+        y: 20,
+        duration: 0.8,
         ease: "power3.out",
       });
 
       gsap.from("[data-origins-hero-copy]", {
-        y: 24,
-        opacity: 0,
-        duration: 1.05,
-        delay: 0.15,
+        y: 14,
+        duration: 0.72,
+        delay: 0.06,
         ease: "power3.out",
       });
 
       gsap.from("[data-origins-scroll-cue]", {
-        y: 18,
-        opacity: 0,
-        duration: 1,
-        delay: 0.3,
+        y: 10,
+        duration: 0.64,
+        delay: 0.12,
         ease: "power2.out",
       });
 
@@ -99,9 +96,8 @@ export function HomeOriginsSection() {
 
       gsap.utils.toArray<HTMLElement>("[data-origins-block]").forEach((block) => {
         gsap.from(block, {
-          y: 56,
-          opacity: 0,
-          duration: 1.1,
+          y: 24,
+          duration: 0.8,
           ease: "power3.out",
           scrollTrigger: {
             trigger: block,
@@ -111,9 +107,8 @@ export function HomeOriginsSection() {
       });
 
       gsap.from("[data-origins-first-people-text]", {
-        x: -32,
-        opacity: 0,
-        duration: 1.1,
+        x: -16,
+        duration: 0.72,
         ease: "power3.out",
         scrollTrigger: {
           trigger: "[data-origins-first-people]",
@@ -122,9 +117,8 @@ export function HomeOriginsSection() {
       });
 
       gsap.from("[data-origins-first-people-visual]", {
-        x: 32,
-        opacity: 0,
-        duration: 1.1,
+        x: 16,
+        duration: 0.72,
         ease: "power3.out",
         scrollTrigger: {
           trigger: "[data-origins-first-people]",
@@ -156,10 +150,9 @@ export function HomeOriginsSection() {
       });
 
       gsap.from("[data-origins-card]", {
-        y: 26,
-        opacity: 0,
-        duration: 0.9,
-        stagger: 0.14,
+        y: 14,
+        duration: 0.64,
+        stagger: 0.08,
         ease: "power3.out",
         scrollTrigger: {
           trigger: "[data-origins-theory]",
@@ -168,10 +161,9 @@ export function HomeOriginsSection() {
       });
 
       gsap.from("[data-origins-closing-line]", {
-        y: 18,
-        opacity: 0,
-        duration: 0.9,
-        stagger: 0.1,
+        y: 10,
+        duration: 0.64,
+        stagger: 0.06,
         ease: "power2.out",
         scrollTrigger: {
           trigger: "[data-origins-closing]",
@@ -206,7 +198,7 @@ export function HomeOriginsSection() {
 
       <section
         data-origins-hero
-        className="relative flex min-h-[72vh] items-start justify-center px-6 pb-20 pt-28 md:min-h-[78vh] md:pt-32"
+        className="relative flex min-h-[34svh] items-start justify-center px-5 pb-8 pt-10 sm:min-h-[40svh] sm:px-6 sm:pt-14 md:min-h-[52vh] md:pb-14 md:pt-16 lg:min-h-[58vh] lg:pt-20"
       >
         <div
           data-origins-hero-backdrop
@@ -221,13 +213,13 @@ export function HomeOriginsSection() {
         <div className="relative z-10 mx-auto max-w-4xl text-center">
           <h2
             data-origins-hero-title
-            className="text-6xl font-black tracking-tight text-slate-950 sm:text-7xl md:text-8xl"
+            className="text-5xl font-black tracking-tight text-slate-950 sm:text-7xl md:text-8xl"
           >
             Origins
           </h2>
           <p
             data-origins-hero-copy
-            className="mx-auto mt-6 max-w-3xl text-lg leading-8 text-slate-700 sm:text-xl"
+            className="mx-auto mt-4 max-w-3xl text-base leading-7 text-slate-700 sm:mt-6 sm:text-xl sm:leading-8"
           >
             How the earliest settlers moved across the Pacific and how Fiji became
             part of that story.
@@ -236,7 +228,7 @@ export function HomeOriginsSection() {
 
         <div
           data-origins-scroll-cue
-          className="absolute bottom-10 left-1/2 z-10 -translate-x-1/2 text-center"
+          className="absolute bottom-10 left-1/2 z-10 hidden -translate-x-1/2 text-center md:block"
         >
           <p className="text-xs font-semibold uppercase tracking-[0.32em] text-slate-700/75">
             Scroll to continue
@@ -247,11 +239,11 @@ export function HomeOriginsSection() {
         </div>
       </section>
 
-      <div className="relative z-10 mx-auto max-w-6xl px-6 pb-24">
+      <div className="relative z-10 mx-auto max-w-6xl px-5 pb-8 md:px-6 md:pb-12">
         <section
           data-origins-block
           data-origins-first-people
-          className="origins-panel relative overflow-hidden rounded-[2rem] border border-white/55 bg-white/72 px-8 py-10 shadow-xl backdrop-blur sm:px-10"
+          className="origins-panel relative overflow-hidden rounded-[1.4rem] border border-white/55 bg-white/72 px-5 py-8 shadow-xl backdrop-blur sm:rounded-[2rem] sm:px-10 sm:py-10"
         >
           <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
             <div data-origins-first-people-text>
@@ -280,7 +272,7 @@ export function HomeOriginsSection() {
 
             <div data-origins-first-people-visual className="relative">
               <div className="origins-panel rounded-[1.75rem] border border-slate-200/75 bg-[linear-gradient(180deg,rgba(255,255,255,0.92),rgba(240,247,243,0.85))] p-6 shadow-lg">
-                <div className="relative min-h-[320px] overflow-hidden rounded-[1.5rem] bg-[radial-gradient(circle_at_18%_20%,rgba(245,158,11,0.16),transparent_18%),linear-gradient(180deg,#edf7f4_0%,#dceae6_100%)] p-6">
+                <div className="relative min-h-[260px] overflow-hidden rounded-[1.5rem] bg-[radial-gradient(circle_at_18%_20%,rgba(245,158,11,0.16),transparent_18%),linear-gradient(180deg,#edf7f4_0%,#dceae6_100%)] p-5 sm:min-h-[320px] sm:p-6">
                   <div className="origins-route absolute left-[14%] top-[34%] h-[2px] w-[58%] -rotate-[10deg]" />
                   <div className="origins-route absolute left-[38%] top-[46%] h-[2px] w-[36%] rotate-[18deg]" />
                   <div className="origins-route absolute left-[58%] top-[56%] h-[2px] w-[22%] rotate-[8deg]" />
@@ -318,7 +310,7 @@ export function HomeOriginsSection() {
         <section
           data-origins-block
           data-origins-ocean
-          className="relative mt-10 overflow-hidden rounded-[2rem] border border-white/25 bg-slate-950/84 px-8 py-20 text-white shadow-xl sm:px-10"
+          className="relative mt-6 overflow-hidden rounded-[1.4rem] border border-white/25 bg-slate-950/84 px-5 py-12 text-white shadow-xl sm:rounded-[2rem] sm:px-10 md:mt-10 md:py-20"
         >
           <div
             data-origins-currents
@@ -346,13 +338,13 @@ export function HomeOriginsSection() {
         <section
           data-origins-block
           data-origins-fiji
-          className="origins-panel relative mt-10 overflow-hidden rounded-[2rem] border border-white/55 bg-white/74 px-8 py-10 shadow-xl backdrop-blur sm:px-10"
+          className="origins-panel relative mt-6 overflow-hidden rounded-[1.4rem] border border-white/55 bg-white/74 px-5 py-8 shadow-xl backdrop-blur sm:rounded-[2rem] sm:px-10 sm:py-10 md:mt-10"
         >
           <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
             <div className="relative order-2 lg:order-1">
               <div
                 data-origins-map
-                className="relative min-h-[340px] overflow-hidden rounded-[1.75rem] border border-slate-200/80 bg-[radial-gradient(circle_at_22%_18%,rgba(255,255,255,0.92),rgba(255,255,255,0.42)_18%,transparent_22%),linear-gradient(180deg,#dbebe8_0%,#bed7d2_42%,#8fb6bc_100%)] shadow-lg"
+                className="relative min-h-[280px] overflow-hidden rounded-[1.75rem] border border-slate-200/80 bg-[radial-gradient(circle_at_22%_18%,rgba(255,255,255,0.92),rgba(255,255,255,0.42)_18%,transparent_22%),linear-gradient(180deg,#dbebe8_0%,#bed7d2_42%,#8fb6bc_100%)] shadow-lg sm:min-h-[340px]"
               >
                 <div className="origins-map-grid absolute inset-0" />
                 <div className="origins-island absolute left-[18%] top-[26%] h-8 w-14 rounded-full" />
@@ -390,7 +382,7 @@ export function HomeOriginsSection() {
         <section
           data-origins-block
           data-origins-theory
-          className="relative mt-10 overflow-hidden rounded-[2rem] border border-white/35 bg-[linear-gradient(180deg,rgba(17,35,50,0.92),rgba(15,23,42,0.96))] px-8 py-10 text-white shadow-xl sm:px-10"
+          className="relative mt-6 overflow-hidden rounded-[1.4rem] border border-white/35 bg-[linear-gradient(180deg,rgba(17,35,50,0.92),rgba(15,23,42,0.96))] px-5 py-8 text-white shadow-xl sm:rounded-[2rem] sm:px-10 sm:py-10 md:mt-10"
         >
           <div className="grid gap-8 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
             <div className="max-w-xl">
@@ -432,7 +424,7 @@ export function HomeOriginsSection() {
         <section
           data-origins-block
           data-origins-closing
-          className="relative mt-10 overflow-hidden rounded-[2rem] border border-white/15 bg-[linear-gradient(180deg,rgba(24,49,63,0.84),rgba(9,18,29,0.97))] px-8 py-24 text-white shadow-xl sm:px-10"
+          className="relative mt-6 overflow-hidden rounded-[1.4rem] border border-white/15 bg-[linear-gradient(180deg,rgba(24,49,63,0.84),rgba(9,18,29,0.97))] px-5 py-14 text-white shadow-xl sm:rounded-[2rem] sm:px-10 sm:py-16 md:mt-10 md:py-24"
         >
           <div className="origins-night-sky absolute inset-0" />
           <div className="origins-island-dusk absolute inset-x-0 bottom-0 h-40" />

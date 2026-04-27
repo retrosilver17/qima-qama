@@ -79,7 +79,7 @@ export function HomeGreetingsBackdrop({
     <div
       aria-hidden="true"
       ref={containerRef}
-      className="pointer-events-none fixed inset-0 z-0 hidden select-none overflow-hidden transition-opacity duration-300 md:block"
+      className="home-greetings-backdrop pointer-events-none fixed inset-0 z-0 block select-none overflow-hidden transition-opacity duration-300"
     >
       <div className="relative mx-auto h-screen max-w-7xl">
         {greetings.map((greeting) => (

@@ -63,10 +63,10 @@ export default function Home() {
 
       <section
         data-home-hero
-        className="relative z-10 mx-auto max-w-6xl overflow-hidden px-6 py-20 md:py-24"
+        className="relative z-10 mx-auto max-w-6xl overflow-hidden px-5 pb-4 pt-12 sm:px-6 sm:pb-8 sm:pt-20 md:pb-6 md:pt-24"
       >
         <HomeHeroReveal />
-        <div className="relative grid items-center gap-12 lg:grid-cols-2">
+        <div className="relative grid items-center gap-10 md:gap-12 lg:grid-cols-2">
           <div className="relative z-10">
             <div
               data-hero-badge
@@ -79,7 +79,7 @@ export default function Home() {
 
             <div data-hero-brand className="relative mt-5 inline-block">
               <div className="hero-title-glow absolute inset-0 rounded-[1.75rem]" />
-              <h1 className="hero-title masi-title-card relative rounded-[1.75rem] px-6 py-5 text-[clamp(3rem,12vw,6rem)] font-black uppercase tracking-[0.18em] text-slate-950 sm:px-8 sm:tracking-[0.24em] md:text-8xl">
+              <h1 className="hero-title masi-title-card relative rounded-[1.75rem] px-5 py-5 text-[clamp(3rem,12vw,6rem)] font-black uppercase tracking-[0.1em] text-slate-950 sm:px-8 sm:tracking-[0.18em] md:text-8xl md:tracking-[0.24em]">
                 Qima Qama
               </h1>
             </div>
@@ -93,7 +93,7 @@ export default function Home() {
 
             <h2
               data-hero-headline
-              className="mt-5 max-w-3xl text-4xl font-black leading-tight tracking-tight text-slate-950 sm:text-5xl md:text-6xl"
+              className="mt-5 max-w-3xl text-3xl font-black leading-tight tracking-tight text-slate-950 sm:text-5xl md:text-6xl"
             >
               Preserving the wisdom,
               <span className="block text-[#0f766e]">traditions,</span>
@@ -102,7 +102,7 @@ export default function Home() {
 
             <p
               data-hero-copy
-              className="mt-6 max-w-2xl text-lg leading-8 text-slate-700"
+              className="mt-6 max-w-2xl text-base leading-8 text-slate-700 sm:text-lg"
             >
               A digital cultural knowledge platform for exploring iTaukei traditions,
               practices, stories, language, and identity through a clean and modern
@@ -161,9 +161,9 @@ export default function Home() {
 
             <div
               data-hero-visual-inner
-              className="cultural-frame relative overflow-hidden rounded-[1.75rem] p-3 shadow-xl"
+              className="cultural-frame relative overflow-hidden rounded-[1.75rem] p-2 shadow-xl sm:p-3"
             >
-              <div className="relative h-[500px] w-full">
+              <div className="relative h-[320px] w-full sm:h-[420px] lg:h-[500px]">
                 <Image
                   src="/images/sevusevu.jpg"
                   alt="Fijian cultural welcome ceremony"
@@ -177,7 +177,7 @@ export default function Home() {
 
             <div
               data-hero-card
-              className="heritage-float-card absolute -bottom-6 left-6 rounded-2xl p-5 shadow-lg"
+              className="heritage-float-card static mt-4 rounded-2xl p-5 shadow-lg md:absolute md:-bottom-6 md:left-6 md:mt-0"
             >
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#0f766e]">
                 Cultural Focus
@@ -192,8 +192,8 @@ export default function Home() {
 
       <HomeOriginsSection />
 
-      <section id="definitions" className="relative z-10 mx-auto max-w-6xl px-6 py-20">
-        <MotionReveal className="mb-8 flex items-end justify-between">
+      <section id="definitions" className="relative z-10 mx-auto max-w-6xl px-5 pb-20 pt-8 md:px-6 md:pb-20 md:pt-12">
+        <MotionReveal className="mb-8 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="section-kicker text-sm font-semibold uppercase tracking-[0.2em] text-[#0f766e]">
               Learn
@@ -206,7 +206,7 @@ export default function Home() {
 
           <Link
             href="/definitions"
-            className="heritage-text-link text-sm font-semibold"
+            className="heritage-text-link self-start whitespace-nowrap text-sm font-semibold sm:self-auto"
           >
             View all
           </Link>

@@ -481,10 +481,96 @@ export const fijianDefinitions = [
     meaning: "Na ili ni dua na ka raba me tara qele.",
   },
   {
+    slug: "ikotokoto",
+    term: "Ikotokoto",
+    meaning:
+      "Na ibe matailalai ka dau tevu ena mocemoce me dayoci se idayodayo.",
+  },
+  {
+    slug: "italitali",
+    term: "Italitali",
+    meaning: "Na icakacaka ni dua na ka me vaka na ibe.",
+  },
+  {
+    slug: "kasa",
+    term: "Kasa",
+    meaning: "Nanuma dei.",
+  },
+  {
+    slug: "kauwaitaki",
+    term: "Kauwaitaki",
+    meaning: "Malele ni yalo ki na dua na ka.",
+  },
+  {
     slug: "mataniveiwatini",
     term: "Mataniveiwatini",
     meaning:
       "E dua e luve ni tagane ka dua e luve ni yalewa, ia e dua e tagane ka dua na yalewa vei rau na gone.",
+  },
+  {
+    slug: "munemuneke",
+    term: "Munemuneke",
+    meaning: "Levulevu ka rairai vinaka.",
+  },
+  {
+    slug: "oko",
+    term: "Oko",
+    meaning:
+      "Ologi ni vudi ena drauna me vakadreu ka me vunitaki vei ira na manumanu.",
+  },
+  {
+    slug: "qarikau",
+    term: "Qarikau",
+    meaning: "E dua na tamata balavu, levu ka kaukaua.",
+  },
+  {
+    slug: "qevaka",
+    term: "Qevaka",
+    meaning: "Kelivaka wavoki.",
+  },
+  {
+    slug: "rourou-vakautona",
+    term: "Rourou vakautona",
+    meaning: "Na rourou a ologi koto e loma na moci.",
+  },
+  {
+    slug: "sa-dre-o-malolo",
+    term: "Sa dre o Malolo",
+    meaning: "Sa kala sobu na matanisiga ni sa voleka na karobo.",
+  },
+  {
+    slug: "sa-ketekete-ni-bici-na-lomalagi",
+    term: "Sa ketekete ni bici na lomalagi",
+    meaning:
+      "Ni siga vinaka na vanua ka karakarawa tu na lomalagi.",
+  },
+  {
+    slug: "sosoqoni",
+    term: "Sosoqoni",
+    meaning: "Kumuni vata me qai kilai.",
+  },
+  {
+    slug: "talabusese",
+    term: "Talabusese",
+    meaning: "Dui gole ka muri lomadra; dredre ni ra vakauti vata.",
+  },
+  {
+    slug: "vakadodo",
+    term: "Vakadodo",
+    meaning:
+      "Vakacegu ena dabe vakaToga ni o sa tucake se sala yava.",
+  },
+  {
+    slug: "vakamaluataki",
+    term: "Vakamaluataki",
+    meaning:
+      "Na itavi ka vakayacori tarava ni sa cigomi ka kacivi oti na tabua, yaqona se kakana.",
+  },
+  {
+    slug: "vakatagedegede",
+    term: "Vakatagedegede",
+    meaning:
+      "Na iyacoyaco ni ivakarau ni dua na ka me vaka na bula, vuli.",
   },
   {
     slug: "veidauveni",
@@ -506,5 +592,10 @@ export const fijianDefinitions = [
     slug: "vokavoka",
     term: "Vokavoka",
     meaning: "Gole sobu na mati.",
+  },
+  {
+    slug: "voravora",
+    term: "Voravora",
+    meaning: "Kaukaua ka levu na kena leqa.",
   },
 ].sort((a, b) => a.term.localeCompare(b.term));

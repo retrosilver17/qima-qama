@@ -35,6 +35,8 @@ export default async function DefinitionsPage({
   const activeDescription = isFijianMode
     ? "Read Fijian words through Fijian explanations, preserving phrasing, cadence, and cultural context."
     : "Browse the wider English glossary for quick learning across ceremony, protocol, language, and vanua.";
+  const contextNote =
+    "Note: some Fijian words can carry different meanings depending on context, place, and use, so there may be other meanings for the same word.";
 
   return (
     <main className="masi-page relative isolate min-h-screen overflow-hidden text-slate-900">
@@ -147,6 +149,11 @@ export default async function DefinitionsPage({
           <p className="sm:col-span-3 text-sm leading-6 text-slate-600">
             {activeDescription}
           </p>
+          {isFijianMode ? (
+            <p className="sm:col-span-3 rounded-2xl border border-amber-200 bg-amber-50/80 p-4 text-sm leading-6 text-slate-700">
+              {contextNote}
+            </p>
+          ) : null}
         </MotionReveal>
 
         <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">

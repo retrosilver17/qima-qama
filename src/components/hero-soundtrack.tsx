@@ -1,49 +1,37 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
-const soundtrackSrc = "/audio/pacific-ambient.wav";
+const soundtrackSrc = "/audio/pacific-ambient-mobile.wav";
 
 export function HeroSoundtrack() {
   const audioRef = useRef<HTMLAudioElement>(null);
-  const [isAvailable, setIsAvailable] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-
-  useEffect(() => {
-    let isMounted = true;
-
-    async function checkTrack() {
-      try {
-        const response = await fetch(soundtrackSrc, { method: "HEAD" });
-
-        if (isMounted) {
-          setIsAvailable(response.ok);
-        }
-      } catch {
-        if (isMounted) {
-          setIsAvailable(false);
-        }
-      }
-    }
-
-    checkTrack();
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+  const [playbackError, setPlaybackError] = useState<string | null>(null);
 
   async function togglePlayback() {
     const audio = audioRef.current;
 
-    if (!audio || !isAvailable) {
+    if (!audio) {
       return;
     }
 
+    setPlaybackError(null);
+
     if (audio.paused) {
       audio.volume = 0.35;
-      await audio.play();
-      setIsPlaying(true);
+      audio.load();
+
+      try {
+        await audio.play();
+        setIsPlaying(true);
+      } catch {
+        setIsPlaying(false);
+        setPlaybackError(
+          "If Safari blocks the button, use the audio control below to start the soundtrack.",
+        );
+      }
+
       return;
     }
 
@@ -59,7 +47,7 @@ export function HeroSoundtrack() {
             Soundtrack
           </p>
           <p className="mt-2 text-sm font-medium text-slate-900">
-            Optional ambient audio for the homepage.
+            Pacific ambience for the journey.
           </p>
         </div>
 
@@ -68,24 +56,32 @@ export function HeroSoundtrack() {
           onClick={() => {
             void togglePlayback();
           }}
-          disabled={!isAvailable}
-          className="rounded-full bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:bg-slate-300"
+          className="btn-primary rounded-full px-5 py-2 text-sm font-semibold text-white"
         >
           {isPlaying ? "Pause" : "Play"}
         </button>
       </div>
 
       <p className="mt-3 text-sm leading-6 text-slate-600">
-        {isAvailable
-          ? "The soundtrack is loaded and ready. Playback stays optional for visitors."
-          : "Add your audio file to public/audio/pacific-ambient.mp3 and the player will appear ready here."}
+        Tap into a soft Pacific ambience while you explore the stories and
+        language of the vanua.
       </p>
+
+      {playbackError ? (
+        <p className="mt-3 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm leading-6 text-amber-900">
+          {playbackError}
+        </p>
+      ) : null}
 
       <audio
         ref={audioRef}
         className="mt-4 w-full"
-        controls={isAvailable}
-        preload="none"
+        controls
+        preload="metadata"
+        onError={() => {
+          setIsPlaying(false);
+          setPlaybackError("The soundtrack could not load in this browser.");
+        }}
         onPause={() => setIsPlaying(false)}
         onPlay={() => setIsPlaying(true)}
       >

@@ -181,7 +181,7 @@ export function HomeOriginsSection() {
     <section
       ref={sectionRef}
       id="origins"
-      className="origins-section relative z-10 overflow-hidden text-slate-900"
+      className="origins-section relative z-10 scroll-mt-20 overflow-hidden text-slate-900"
     >
       <div className="origins-top-blend pointer-events-none absolute inset-x-0 top-0 z-10 h-56" />
       <div className="origins-bottom-blend pointer-events-none absolute inset-x-0 bottom-0 z-10 h-56" />
@@ -198,28 +198,28 @@ export function HomeOriginsSection() {
 
       <section
         data-origins-hero
-        className="relative flex min-h-[34svh] items-start justify-center px-5 pb-8 pt-10 sm:min-h-[40svh] sm:px-6 sm:pt-14 md:min-h-[52vh] md:pb-14 md:pt-16 lg:min-h-[58vh] lg:pt-20"
+        className="relative flex min-h-[100svh] items-center justify-center px-5 pb-28 pt-24 sm:px-6 sm:pb-32 sm:pt-28 lg:pb-36 lg:pt-32"
       >
         <div
           data-origins-hero-backdrop
           className="absolute inset-0"
         >
-          <div className="origins-sun-glow absolute left-1/2 top-[18%] h-44 w-44 -translate-x-1/2 rounded-full bg-amber-100/70 blur-3xl" />
-          <div className="origins-ocean-layer origins-ocean-layer-back absolute inset-x-0 bottom-0 h-[58%]" />
-          <div className="origins-ocean-layer origins-ocean-layer-front absolute inset-x-0 bottom-0 h-[44%]" />
-          <div className="origins-island-line absolute inset-x-0 bottom-[26%] h-24" />
+          <div className="origins-sun-glow absolute left-1/2 top-[18%] h-56 w-56 -translate-x-1/2 rounded-full bg-amber-100/70 blur-3xl sm:h-72 sm:w-72" />
+          <div className="origins-ocean-layer origins-ocean-layer-back absolute inset-x-0 bottom-0 h-[48%]" />
+          <div className="origins-ocean-layer origins-ocean-layer-front absolute inset-x-0 bottom-0 h-[36%]" />
+          <div className="origins-island-line absolute inset-x-0 bottom-[24%] h-24" />
         </div>
 
-        <div className="relative z-10 mx-auto max-w-4xl text-center">
+        <div className="relative z-10 mx-auto max-w-5xl text-center">
           <h2
             data-origins-hero-title
-            className="text-5xl font-black tracking-tight text-slate-950 sm:text-7xl md:text-8xl"
+            className="text-[clamp(3.75rem,11vw,8rem)] font-black leading-none tracking-tight text-slate-950"
           >
             Origins
           </h2>
           <p
             data-origins-hero-copy
-            className="mx-auto mt-4 max-w-3xl text-base leading-7 text-slate-700 sm:mt-6 sm:text-xl sm:leading-8"
+            className="mx-auto mt-6 max-w-3xl text-lg leading-8 text-slate-700 sm:mt-8 sm:text-2xl sm:leading-10"
           >
             How the earliest settlers moved across the Pacific and how Fiji became
             part of that story.
@@ -228,18 +228,18 @@ export function HomeOriginsSection() {
 
         <div
           data-origins-scroll-cue
-          className="absolute bottom-10 left-1/2 z-10 hidden -translate-x-1/2 text-center md:block"
+          className="absolute bottom-14 left-1/2 z-10 -translate-x-1/2 text-center sm:bottom-16"
         >
           <p className="text-xs font-semibold uppercase tracking-[0.32em] text-slate-700/75">
             Scroll to continue
           </p>
-          <div className="mx-auto mt-3 flex h-12 w-7 justify-center rounded-full border border-slate-700/20 bg-white/40 backdrop-blur">
+          <div className="mx-auto mt-3 flex h-12 w-7 justify-center rounded-full border border-slate-700/20 bg-white/45 backdrop-blur">
             <span className="origins-scroll-dot mt-2 block h-2.5 w-2.5 rounded-full bg-emerald-700/75" />
           </div>
         </div>
       </section>
 
-      <div className="relative z-10 mx-auto max-w-6xl px-5 pb-8 md:px-6 md:pb-12">
+      <div className="relative z-10 mx-auto max-w-6xl px-5 pb-8 pt-14 md:px-6 md:pb-12 md:pt-18">
         <section
           data-origins-block
           data-origins-first-people

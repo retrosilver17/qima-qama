@@ -82,13 +82,6 @@ export function HomeHeroReveal() {
           "-=0.36",
         )
         .from(
-          "[data-hero-soundtrack]",
-          {
-            y: 10,
-          },
-          "-=0.32",
-        )
-        .from(
           "[data-hero-visual]",
           {
             y: 18,

@@ -4,8 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 
-import { HeroSoundtrack } from "./hero-soundtrack";
-
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
 }
@@ -305,7 +303,6 @@ export function HomeSailingHero() {
                   </Link>
                 </div>
 
-                <HeroSoundtrack />
               </div>
             </div>
 
